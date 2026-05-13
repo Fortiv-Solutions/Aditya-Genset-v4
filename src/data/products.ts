@@ -1,11 +1,11 @@
 import dgOverview from "@/assets/products/showcase/main-view-optimized.jpg";
-import dgEngine from "@/assets/products/parts/engine-real.jpg"; // Placeholder as original is missing
-import dgAlternator from "@/assets/products/parts/engine-real.jpg"; // Placeholder as original is missing
-import dgEnclosure from "@/assets/products/parts/enclosure.jpg";
-import dgDimensions from "@/assets/products/showcase/main-view-optimized.jpg"; // Placeholder
-import dgThumb from "@/assets/products/parts/enclosure.jpg";
-import dgControl from "@/assets/products/parts/enclosure.jpg"; // Placeholder
-import dgFuel from "@/assets/products/parts/enclosure.jpg"; // Placeholder
+import dgEngine from "@/assets/products/escorts/escort_40kva_2.jpg"; 
+import dgAlternator from "@/assets/products/escorts/escort_40kva_3.jpg"; 
+import dgEnclosure from "@/assets/products/escorts/escort_58_5kva_5.jpg";
+import dgDimensions from "@/assets/products/escorts/escort_20kva.jpg"; 
+import dgThumb from "@/assets/products/escorts/escort_40kva_main.jpg";
+import dgControl from "@/assets/products/escorts/escort_30kva_1.jpg"; 
+import dgFuel from "@/assets/products/escorts/escort_25kva.jpg";
 import escortVideo from "@/assets/products/showcase/product-video.mp4";
 
 export type ProductStatus = "active" | "coming_soon";
