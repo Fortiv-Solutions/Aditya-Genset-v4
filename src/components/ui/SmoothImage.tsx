@@ -1,4 +1,4 @@
-import { useState, ImgHTMLAttributes } from "react";
+import { useState, useRef, useEffect, ImgHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 interface SmoothImageProps extends ImgHTMLAttributes<HTMLImageElement> {
@@ -14,6 +14,13 @@ export function SmoothImage({
   ...props 
 }: SmoothImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imgRef.current?.complete) {
+      setIsLoaded(true);
+    }
+  }, []);
 
   return (
     <div className={cn("overflow-hidden relative bg-secondary/30", wrapperClassName, className)}>
@@ -27,9 +34,11 @@ export function SmoothImage({
       
       <img
         {...props}
+        ref={imgRef}
         alt={alt || "Image"}
         decoding={props.decoding || "async"}
         onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
         className={cn(
           "h-full w-full object-cover transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
           isLoaded ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-105 blur-sm",
