@@ -213,7 +213,7 @@ export function ScrollStory({
                 active === 0 ? "h-[750px] justify-center" : "h-[400px] justify-start pt-2"
               )}>
                 <div className="w-full max-w-full h-full relative flex items-center justify-center">
-                  {active === product.sections.length - 1 && product.sections[active].videoUrl ? (
+                  {product.sections[active]?.videoUrl ? (
                     <div className="relative w-full h-full group flex items-center justify-center">
                       <video
                         ref={videoRef}
@@ -309,6 +309,16 @@ export function ScrollStory({
             {product.engineBrand !== "Escorts" && (
               <div className="mb-6 aspect-square overflow-hidden rounded-sm bg-muted">
                 <SmoothImage src={s.image} alt={s.alt} loading="eager" wrapperClassName="h-full w-full" imageClassName="h-full w-full object-cover" />
+              </div>
+            )}
+            {s.videoUrl && (
+              <div className="mb-6 aspect-video overflow-hidden rounded-sm bg-black relative">
+                <video
+                  src={s.videoUrl}
+                  controls
+                  playsInline
+                  className="h-full w-full object-contain"
+                />
               </div>
             )}
             {product.engineBrand === "Escorts" ? (
