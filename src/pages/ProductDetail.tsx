@@ -19,6 +19,7 @@ import showcaseVideo from "@/assets/products/showcase/product-video.mp4";
 // Import core showcase assets to ensure they are bundled correctly
 import escortVideo from "@/assets/products/showcase/product-video.mp4";
 import escortVideoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
+import escortElectrical from "@/assets/products/escorts/escort_40kva_4.jpg";
 
 // Height of the absolute header overlay in px — used to offset first chapter
 export const SHOWCASE_HEADER_H = 230;
@@ -122,7 +123,7 @@ export default function ProductDetail() {
               number: "10",
               title: "Electrical Performance",
               tagline: "Comprehensive electrical specifications and reactance data.",
-              image: "/assets/products/parts/enclosure.jpg",
+              image: finalProduct.engineBrand === "Escorts" ? escortElectrical : "/assets/products/parts/enclosure.jpg",
               alt: "Electrical performance",
               specs: [
                 { label: "Short Circuit Ratio", value: finalProduct.engineBrand === "Escorts" ? (Number(finalProduct.kva) === 15 ? "0.515" : "0.410") : "0.450" },
@@ -200,7 +201,7 @@ export default function ProductDetail() {
               number: "10",
               title: "Electrical Performance",
               tagline: "Comprehensive electrical specifications and reactance data.",
-              image: "/assets/products/parts/enclosure.jpg",
+              image: finalProduct.engineBrand === "Escorts" ? escortElectrical : "/assets/products/parts/enclosure.jpg",
               alt: "Electrical performance",
               specs: [
                 { label: "Short Circuit Ratio", value: finalProduct.engineBrand === "Escorts" ? (Number(finalProduct.kva) === 15 ? "0.515" : "0.410") : "0.450" },

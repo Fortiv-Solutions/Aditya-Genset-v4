@@ -5,6 +5,17 @@
  */
 import { supabase } from "../supabase";
 
+// ── Fallback Assets ──────────────────────────────────────────────────────────
+import escort15 from "@/assets/products/escorts/escort_15kva.jpg";
+import engineImg from "@/assets/products/escorts/escort_40kva_2.jpg";
+import alternatorImg from "@/assets/products/escorts/escort_40kva_3.jpg";
+import controlImg from "@/assets/products/escorts/escort_30kva_1.jpg";
+import enclosureImg from "@/assets/products/escorts/escort_58_5kva_5.jpg";
+import protectionImg from "@/assets/products/escorts/escort_58_5kva_6.jpg";
+import electricalImg from "@/assets/products/escorts/escort_40kva_4.jpg";
+import supplyImg from "@/assets/products/escorts/escort_20kva_1.jpg";
+import dimensionsImg from "@/assets/products/escorts/escort_20kva.jpg";
+
 // ── Types matching the frontend ShowcaseProduct interface ────────────────────
 export interface V2SpecRow {
   label: string;
@@ -141,6 +152,27 @@ export async function fetchProductDetailV2(slug: string): Promise<V2ShowcaseProd
       .eq("product_id", productId)
       .maybeSingle(),
   ]);
+  
+  const isEscort = (product.engine_brand || "").toLowerCase().includes("escort");
+
+  const getFallback = (key: string, current: string | null) => {
+    if (!isEscort) return current || "";
+    // If it's a known placeholder or empty, swap it
+    const isPlaceholder = !current || current.includes("placeholder") || current.includes("enclosure.jpg") || current.includes("engine-real.jpg");
+    if (!isPlaceholder) return current;
+
+    const lowerKey = key.toLowerCase();
+    if (lowerKey.includes("engine")) return engineImg;
+    if (lowerKey.includes("alternator")) return alternatorImg;
+    if (lowerKey.includes("control")) return controlImg;
+    if (lowerKey.includes("enclosure") || lowerKey.includes("canopy")) return enclosureImg;
+    if (lowerKey.includes("protection")) return protectionImg;
+    if (lowerKey.includes("electrical")) return electricalImg;
+    if (lowerKey.includes("supply")) return supplyImg;
+    if (lowerKey.includes("dimension")) return dimensionsImg;
+    if (lowerKey.includes("fuel")) return supplyImg;
+    return escort15;
+  };
 
   // 3. Transform sections → ShowcaseSection[]
   const sections: V2ShowcaseSection[] = (sectionsRes.data || []).map((s: any) => ({
@@ -148,7 +180,7 @@ export async function fetchProductDetailV2(slug: string): Promise<V2ShowcaseProd
     number: s.chapter_number,
     title: s.title,
     tagline: s.tagline || undefined,
-    image: s.image_url || "",
+    image: getFallback(s.chapter_key, s.image_url),
     alt: s.alt_text || s.title,
     videoUrl: s.video_url || undefined,
     highlight: s.highlight || undefined,
@@ -194,7 +226,7 @@ export async function fetchProductDetailV2(slug: string): Promise<V2ShowcaseProd
     y: Number(h.y),
     title: h.title,
     description: h.description || "",
-    subImage: h.sub_image_url || undefined,
+    subImage: getFallback(h.hotspot_key, h.sub_image_url),
     zoom: Number(h.zoom) || 1,
     offsetX: Number(h.offset_x) || 0,
     offsetY: Number(h.offset_y) || 0,
