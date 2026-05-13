@@ -45,13 +45,14 @@ export default function ProductDetail() {
         if (v2Data && v2Data.sections.length > 0) {
           console.log("✅ Using v2 product data for:", slug);
           
-          // Ensure video slide exists (inject from bundled assets)
-          if (!v2Data.sections.find(s => s.id === "video")) {
+          // Ensure video slide exists
+          const hasVideo = v2Data.sections.some(s => s.id === "video" || !!s.videoUrl);
+          if (!hasVideo) {
             v2Data.sections.push({
               id: "video",
               number: String(v2Data.sections.length + 1).padStart(2, "0"),
               title: "Product Video",
-              tagline: "Escort DG Set — Multiple views and 360° product showcase.",
+              tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
               image: "/assets/products/showcase/main-view-optimized.jpg",
               videoUrl: "/assets/products/showcase/product-video.mp4",
               alt: `${v2Data.name} 360 degree showcase`,
@@ -62,7 +63,7 @@ export default function ProductDetail() {
               ],
             });
           } else {
-            const videoSec = v2Data.sections.find(s => s.id === "video");
+            const videoSec = v2Data.sections.find(s => s.id === "video" || !!s.videoUrl);
             if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
             if (videoSec && !videoSec.image) videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
           }
@@ -165,7 +166,8 @@ export default function ProductDetail() {
           }
 
           // Ensure video slide exists
-          if (!finalProduct.sections.find(s => s.id === "video")) {
+          const videoSec = finalProduct.sections.find(s => s.id === "video" || !!s.videoUrl);
+          if (!videoSec) {
             const lastNum = finalProduct.sections.length > 0 
               ? parseInt(finalProduct.sections[finalProduct.sections.length - 1].number) 
               : 0;
@@ -173,9 +175,9 @@ export default function ProductDetail() {
               id: "video",
               number: String(lastNum + 1).padStart(2, '0'),
               title: "Product Video",
-              tagline: "Escort DG Set — Multiple views and 360° product showcase.",
-              image: videoThumb,
-              videoUrl: showcaseVideo,
+              tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
+              image: "/assets/products/showcase/main-view-optimized.jpg",
+              videoUrl: "/assets/products/showcase/product-video.mp4",
               alt: `${finalProduct.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -184,14 +186,9 @@ export default function ProductDetail() {
               ],
             });
           } else {
-            // Force videoUrl for the existing video section if missing or incorrect
-            const videoSec = finalProduct.sections.find(s => s.id === "video");
-            if (videoSec && !videoSec.videoUrl) {
-              videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
-            }
-            if (videoSec && !videoSec.image) {
-              videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
-            }
+            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
+            if (videoSec && !videoSec.image) videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
+            videoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
           }
           if (!finalProduct.hotspots.find(h => h.id === "video")) {
             finalProduct.hotspots.push({
