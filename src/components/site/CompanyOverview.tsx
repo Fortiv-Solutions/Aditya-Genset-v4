@@ -4,7 +4,7 @@ import { EditableText } from "@/components/cms/EditableText";
 
 export function CompanyOverview({ id }: { id?: string }) {
   return (
-    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-white pt-16 md:pt-0">
+    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-brand-warm-gray pt-16 md:pt-0">
       <div className="container-x">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
           {/* Text Content */}
@@ -64,7 +64,7 @@ export function CompanyOverview({ id }: { id?: string }) {
                 ] as const).map((kpi) => (
                   <div
                     key={kpi.valueKey}
-                    className="group relative overflow-hidden rounded-sm border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
+                    className="group relative overflow-hidden rounded-sm border border-white/40 bg-white/60 backdrop-blur-xl p-8 transition-all duration-500 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
                   >
                     <div className="absolute top-0 right-0 p-4 opacity-10 transition-opacity group-hover:opacity-20">
                       <div className="h-16 w-16 rounded-full bg-accent blur-xl" />

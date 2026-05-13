@@ -9,7 +9,7 @@ const pages = [
     title: "Welcome Page",
     description: "Edit the welcome text, company name, tagline, certification, and hero sections.",
     icon: <Layout className="w-8 h-8 text-accent" />,
-    color: "from-amber-500/10 to-amber-600/5",
+    color: "from-[#F1AE27]/10 to-[#F1AE27]/5",
   },
   {
     id: "products",
@@ -112,7 +112,7 @@ export default function AdminCMS() {
 
       {showProductSelect && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 animate-fade-in">
-          <div className="bg-card w-full max-w-2xl max-h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-border animate-slide-up">
+          <div className="glass-card-strong w-full max-w-2xl max-h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden animate-slide-up">
             <div className="flex items-center justify-between p-4 border-b border-border bg-muted/30">
               <h2 className="font-display font-semibold text-lg">Select Product to Edit Showcase</h2>
               <button onClick={() => setShowProductSelect(false)} className="p-1 hover:bg-secondary rounded-md transition-colors">

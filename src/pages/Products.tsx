@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/site/SEO";
 import { SectionReveal } from "@/components/site/SectionReveal";
@@ -40,6 +41,27 @@ export default function Products() {
   // We only need useCMSState to get the value for SEO title, as SEO is not an EditableText
   const { content } = useCMSState();
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        document.activeElement?.tagName === "INPUT" ||
+        document.activeElement?.tagName === "TEXTAREA" ||
+        (document.activeElement as HTMLElement)?.isContentEditable
+      ) {
+        return;
+      }
+      
+      if (e.key === "ArrowLeft") {
+        navigate("/");
+      } else if (e.key === "ArrowRight") {
+        navigate("/products/dg-sets");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
+
   return (
     <>
       <SEO
@@ -47,7 +69,7 @@ export default function Products() {
         description={content.productConfig.sectionSubtitle}
       />
 
-      <section className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 md:py-16 flex items-center">
+      <section className="min-h-screen bg-gradient-to-b from-[#E4E1D6] to-white py-12 md:py-16 flex items-center">
         <div className="container-x w-full">
           {/* Header */}
           <SectionReveal>
@@ -75,7 +97,7 @@ export default function Products() {
             {categories.map((category, index) => (
               <SectionReveal key={category.id} delay={index * 100}>
                 <div
-                  className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100"
+                  className="group relative glass-card-transparent rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer hover:border-white/50"
                   onClick={(e) => {
                     if (document.querySelector('.fixed.inset-0.z-\\[100\\]')) {
                       e.preventDefault();
@@ -95,9 +117,8 @@ export default function Products() {
                     />
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
-                    
                     {/* Icon Badge */}
-                    <div className="absolute top-6 left-6 w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 z-10">
+                    <div className="absolute top-6 left-6 w-14 h-14 glass-panel rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 z-10">
                       <div className="text-accent">
                         {category.icon}
                       </div>

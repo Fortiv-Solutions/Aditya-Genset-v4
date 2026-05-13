@@ -10,7 +10,7 @@ const PARTNER_KEYS = [
 
 export function OEMPartners({ id }: { id?: string }) {
   return (
-    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center bg-secondary/30 pt-16 md:pt-0">
+    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center bg-brand-warm-gray pt-16 md:pt-0">
       <div className="container-x">
         <SectionReveal className="text-center" variant="fadeUp">
           <div className="font-display text-xs uppercase tracking-[0.3em] text-accent">
@@ -31,7 +31,7 @@ export function OEMPartners({ id }: { id?: string }) {
             >
               <motion.div
                 whileHover={{ y: -10, scale: 1.02, rotate: i === 0 ? -1 : i === 2 ? 1 : 0 }}
-                className="group relative aspect-[3/2] overflow-hidden rounded-sm border border-border bg-white p-6 transition-shadow duration-500 hover:border-accent hover:shadow-[0_20px_50px_rgba(242,169,0,0.15)]"
+                className="group relative aspect-[3/2] overflow-hidden rounded-sm border border-white/40 bg-white/60 backdrop-blur-xl p-6 transition-shadow duration-500 hover:border-accent hover:shadow-[0_20px_50px_rgba(242,169,0,0.15)]"
               >
                 {/* Animated shimmer sweep */}
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accent/5 to-transparent transition-transform duration-1000 ease-brand group-hover:translate-x-full" />

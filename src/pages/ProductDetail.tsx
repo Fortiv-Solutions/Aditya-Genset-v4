@@ -2,7 +2,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { SEO } from "@/components/site/SEO";
 import { ScrollStory } from "@/components/site/ScrollStory";
 import { ArrowLeft, Monitor, Loader2 } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { EditableText } from "@/components/cms/EditableText";
 import { useCMSState } from "@/components/cms/CMSEditorProvider";
 import { fetchProductShowcase } from "@/lib/api/cms";
@@ -10,14 +10,15 @@ import { fetchProductDetailV2 } from "@/lib/api/productDetailV2";
 import type { V2ShowcaseProduct } from "@/lib/api/productDetailV2";
 // Legacy fallback (will be removed once v2 migration is confirmed)
 import { ShowcaseProduct, getProductBySlug } from "@/data/products";
-import { useCompare } from "@/context/CompareContext";
 import { BarChart2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import videoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
+
 import showcaseVideo from "@/assets/products/showcase/product-video.mp4";
 
 // Import core showcase assets to ensure they are bundled correctly
 import escortVideo from "@/assets/products/showcase/product-video.mp4";
-import escortVideoThumb from "@/assets/products/showcase/main-view.png";
+import escortVideoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
 
 // Height of the absolute header overlay in px — used to offset first chapter
 export const SHOWCASE_HEADER_H = 230;
@@ -25,13 +26,13 @@ export const SHOWCASE_HEADER_H = 230;
 export default function ProductDetail() {
   const { slug, pageId } = useParams();
   const navigate = useNavigate();
-  const scrollStoryRef = useRef<{ enterPresentMode: () => void }>(null);
+
   const { content, loadProductCMS } = useCMSState();
   const [activeChapter, setActiveChapter] = useState(0);
   const [product, setProduct] = useState<ShowcaseProduct | null>(null);
   const [v2Product, setV2Product] = useState<V2ShowcaseProduct | null>(null);
   const [loading, setLoading] = useState(true);
-  const { isInCompare, addToCompare, removeFromCompare } = useCompare();
+
 
   const isCMSPreview = !!pageId?.startsWith("showcaseData") || !!pageId?.startsWith("ekl15ShowcaseData");
 
@@ -314,93 +315,22 @@ export default function ProductDetail() {
 
   return (
     <div className="relative">
-      <SEO title={`${productName} | Adityagenset`} description={`Explore the ${activeProduct.kva} kVA Silent DG Set: engine, power, sound, dimensions — a guided scroll story.`} />
+      <SEO title={`${productName} | Adityagenset`} description={`High-performance ${activeProduct.kva} kVA Silent DG Set powered by ${activeProduct.engineBrand}. CPCB IV+ compliant and ISO 8528 certified.`} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
 
-      {/* ── Header overlay — visible only on chapter 1 ── */}
-      <div
-        className="absolute top-0 left-0 right-0 z-30 container-showcase pt-8 pointer-events-none transition-all duration-500"
-        style={{
-          height: SHOWCASE_HEADER_H,
-          opacity: activeChapter === 0 ? 1 : 0,
-          transform: activeChapter === 0 ? "translateY(0)" : "translateY(-14px)",
-          pointerEvents: activeChapter === 0 ? undefined : "none",
-        }}
-      >
-        {/* Row 1 — Navigation: back ← ............... → Present Mode */}
-        <div className="flex min-w-0 items-start justify-between gap-4 md:pr-[236px]">
-          <button
-            onClick={() => navigate(-1)}
-            className="pointer-events-auto inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors story-link mt-1"
-          >
-            <ArrowLeft size={12} /> <EditableText section={sectionKey} contentKey="backLabel" as="span" override={isFallback ? "Back to category" : undefined} />
-          </button>
-
-          <div className="mt-3 flex flex-wrap items-center justify-end gap-3">
-            <button
-              onClick={() => {
-                if (activeProduct.id) {
-                  if (isInCompare(activeProduct.id)) removeFromCompare(activeProduct.id);
-                  else addToCompare(activeProduct.id);
-                }
-              }}
-              className={`pointer-events-auto flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold border-2 transition-all duration-300 ${
-                activeProduct.id && isInCompare(activeProduct.id)
-                  ? "bg-accent/10 border-accent text-accent"
-                  : "bg-white border-gray-200 text-foreground hover:border-accent"
-              }`}
-            >
-              <BarChart2 size={15} className="shrink-0" />
-              <EditableText section={sectionKey} contentKey={activeProduct.id && isInCompare(activeProduct.id) ? "compareActiveLabel" : "compareLabel"} as="span" override={isFallback ? (activeProduct.id && isInCompare(activeProduct.id) ? "In Compare" : "Compare") : undefined} />
-            </button>
-
-            <button
-              onClick={() => scrollStoryRef.current?.enterPresentMode()}
-              className="pointer-events-auto cms-clickable inline-flex items-center gap-2 rounded-md bg-foreground px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-brand-navy-deep hover:scale-[1.03] hover:shadow-lg active:scale-95"
-            >
-              <Monitor size={15} className="shrink-0" />
-              <EditableText section={sectionKey} contentKey="presentModeBtn" as="span" override={isFallback ? "Present Mode" : undefined} />
-            </button>
-          </div>
-
-        </div>
-
-        {/* Row 2 — Product identity */}
-        <div className="mt-5 min-w-0 max-w-[min(720px,calc(100vw-11rem))]">
-          {activeProduct.sections && activeProduct.sections.length > 0 && (
-            <div className="font-display text-[10px] uppercase tracking-[0.4em] text-accent">
-              {activeProduct.sections[0]?.number} / {activeProduct.sections[0]?.id}
-            </div>
-          )}
-          <EditableText
-            section={sectionKey}
-            contentKey="productName"
-            override={isFallback ? productName : undefined}
-            fallback={productName}
-            className="mt-1.5 block max-w-full break-words font-display text-3xl font-semibold leading-tight md:text-4xl"
-            as="h1"
-          />
-          <EditableText
-            section={sectionKey}
-            contentKey="pageSubtitle"
-            override={isFallback ? `A 10-chapter walkthrough of the ${activeProduct.engineBrand}-powered ${activeProduct.kva} kVA generator.` : undefined}
-            fallback={isFallback ? `A 10-chapter walkthrough of the ${activeProduct.engineBrand}-powered ${activeProduct.kva} kVA generator.` : undefined}
-            className="mt-1.5 block max-w-xl break-words text-sm text-muted-foreground"
-            as="p"
-          />
-        </div>
-      </div>
+      {/* Header overlay removed to avoid duplication with ScrollStory sticky panel */}
 
 
       {/* ── Full-height scroll story — first chapter respects header height ── */}
       <ScrollStory
-        ref={scrollStoryRef}
         product={activeProduct}
         sectionId={sectionKey}
         firstChapterOffset={112}
         onChapterChange={setActiveChapter}
         chapterDataMap={v2Product?.chapterDataMap}
       />
+
+
     </div>
   );
 }

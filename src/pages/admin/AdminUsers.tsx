@@ -89,7 +89,7 @@ const ROLES: Array<{
   {
     name: "Sales Manager",
     desc: "Access to product catalogue, presentations, quotes, and reports.",
-    badge: "bg-amber-50 text-amber-700 border-amber-200",
+    badge: "bg-[#F1AE27]/10 text-[#124C7B] border-[#F1AE27]/20",
     permissions: ["Products", "Quotes", "Reports"],
   },
   {
@@ -562,7 +562,7 @@ export default function AdminUsers() {
       </div>
 
       {activeTab === "users" && (
-        <div className="bg-card shadow-sm border border-border rounded-xl overflow-hidden">
+        <div className="glass-card-strong shadow-sm rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -636,7 +636,7 @@ export default function AdminUsers() {
       {activeTab === "roles" && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {ROLES.map((role) => (
-            <div key={role.name} className="bg-card shadow-sm border border-border rounded-xl p-5">
+            <div key={role.name} className="glass-card shadow-sm rounded-xl p-5">
               <div className="flex items-center justify-between mb-3">
                 <span className={`px-2.5 py-1 rounded-md text-xs font-bold border ${role.badge}`}>
                   {role.name}
@@ -663,7 +663,7 @@ export default function AdminUsers() {
       )}
 
       {activeTab === "matrix" && (
-        <div className="bg-card shadow-sm border border-border rounded-xl overflow-hidden">
+        <div className="glass-card-strong shadow-sm rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -694,7 +694,7 @@ export default function AdminUsers() {
       )}
 
       {activeTab === "activity" && (
-        <div className="bg-card shadow-sm border border-border rounded-xl overflow-hidden">
+        <div className="glass-card-strong shadow-sm rounded-xl overflow-hidden">
           {loginAudits.length === 0 ? (
             <div className="p-10 text-center text-muted-foreground italic text-sm">
               No login audit events recorded yet. New successful app logins will appear here after the audit policy is applied.

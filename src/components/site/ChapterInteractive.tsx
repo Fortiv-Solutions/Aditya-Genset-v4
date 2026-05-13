@@ -390,7 +390,7 @@ function FuelChapter({ data, sectionId, index, onChange }: { data: ChapterDataIn
         <input
           type="range" min={25} max={110} step={1} value={load}
           onChange={e => setLoad(Number(e.target.value))}
-          className="w-full h-1.5 rounded-full accent-amber-500 cursor-pointer"
+          className="w-full h-1.5 rounded-full accent-[#F1AE27] cursor-pointer"
         />
         <div className="flex justify-between text-[10px] text-muted-foreground mt-1.5">
           {fuelPoints.map((p, i) => (
@@ -484,7 +484,7 @@ function AlternatorChapter({ data, sectionId, index, onChange }: { data: Chapter
               </div>
               <div className="h-2 rounded-full bg-muted overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-accent to-amber-400 transition-all duration-700"
+                  className="h-full rounded-full bg-gold-gradient transition-all duration-700"
                   style={{ width: `${row.value}%` }}
                 />
               </div>
@@ -921,16 +921,14 @@ function DimensionsChapter({ data, sectionId, index, onChange }: { data: Chapter
         </div>
       )}
 
-      <div className="space-y-4">
-        <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium">Dimension Details</p>
+      <div className="space-y-4 pt-4">
         <SpecGrid 
           rows={dims ?? []} 
           onChange={onChange ? (newDims) => onChange({ [isAcoustic ? 'acousticDims' : 'openDims']: newDims }) : undefined} 
         />
       </div>
 
-      <div className="border-t border-border pt-4">
-        <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium mb-3">Overall Specifications</p>
+      <div className="border-t border-border pt-6">
         <SpecGrid rows={data.specs ?? []} sectionId={sectionKey} index={index} onChange={onChange ? (specs) => onChange({ specs }) : undefined} />
       </div>
     </div>
@@ -1013,23 +1011,7 @@ function VideoChapter({ data, sectionId, index, onChange }: { data: ChapterDataI
 
   return (
     <div className="space-y-8 py-4">
-      <div className="space-y-1">
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Official Film</p>
-        <h3 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
-          {onChange ? (
-            <span
-              contentEditable
-              suppressContentEditableWarning
-              onBlur={e => onChange?.({ tagline: e.currentTarget.textContent || "" })}
-              className="outline-none focus:bg-accent/10 focus:ring-2 focus:ring-accent/30 rounded px-1 transition-all"
-            >
-              {data.tagline || "Escort DG Set — In Action"}
-            </span>
-          ) : (
-            <EditableText section={sectionKey} contentKey={`chapter_${index}_tagline`} fallback={data.tagline || "Escort DG Set — In Action"} />
-          )}
-        </h3>
-      </div>
+
 
       <div className="border-l-[3px] border-accent pl-5">
         <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400 italic">

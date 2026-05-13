@@ -7,7 +7,6 @@ import { ArrowLeft, ArrowRight, Zap, Search, Loader2 } from "lucide-react";
 import gensetFallback from "@/assets/products/showcase/main-view-optimized.jpg";
 import { EditableText } from "@/components/cms/EditableText";
 import { useCMSState } from "@/components/cms/CMSEditorProvider";
-import { useCompare } from "@/context/CompareContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PRODUCTS } from "@/data/products";
 
@@ -38,7 +37,7 @@ const applications = ["All", "Prime", "Standby", "Continuous"];
 export default function DGSetsCategory() {
   const navigate = useNavigate();
   const { content } = useCMSState();
-  const { isInCompare, addToCompare, removeFromCompare } = useCompare();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedEngine, setSelectedEngine] = useState<string>("All");
   const [selectedKvaRange, setSelectedKvaRange] = useState(kvaRanges[0]);
@@ -100,7 +99,7 @@ export default function DGSetsCategory() {
         description={content.dgSetsCategory.seoDescription}
       />
 
-      <section className="h-screen bg-white py-6 overflow-hidden flex flex-col">
+      <section className="h-screen bg-[#E4E1D6] py-6 overflow-hidden flex flex-col">
         <div className="container-x max-w-7xl flex-1 flex flex-col min-h-0">
           {/* Header */}
           <div className="mb-4">
@@ -229,29 +228,8 @@ export default function DGSetsCategory() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-4">
               {filteredSets.map((set, index) => (
                 <div key={set.id} onClick={() => navigate(`/products/${set.slug}`)}>
-                  <div className="group relative bg-white border border-border rounded-xl overflow-hidden hover:border-accent hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
-                    {/* Compare Checkbox */}
-                    <div 
-                      className="absolute top-3 right-3 z-20"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex items-center gap-2 px-2 py-1 bg-white/80 backdrop-blur-sm rounded-lg border border-border shadow-sm">
-                        <Checkbox 
-                          id={`compare-${set.id}`}
-                          checked={isInCompare(set.id)}
-                          onCheckedChange={(checked) => {
-                            if (checked) addToCompare(set.id);
-                            else removeFromCompare(set.id);
-                          }}
-                        />
-                        <label 
-                          htmlFor={`compare-${set.id}`}
-                          className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground cursor-pointer"
-                        >
-                          Compare
-                        </label>
-                      </div>
-                    </div>
+                  <div className="group relative glass-card-transparent border-white/30 rounded-xl overflow-hidden hover:border-white/50 hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
+
 
                     {/* Badge */}
                     {index === 0 && (
@@ -261,13 +239,13 @@ export default function DGSetsCategory() {
                     )}
 
                     {/* Image */}
-                    <div className="relative h-48 bg-gray-50 overflow-hidden">
+                    <div className="relative h-48 bg-transparent overflow-hidden">
                       <img
                         src={set.image}
                         alt={set.model}
                         loading={index < 4 ? "eager" : "lazy"}
                         decoding="async"
-                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
                       />
                     </div>
 

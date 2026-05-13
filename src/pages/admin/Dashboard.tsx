@@ -195,7 +195,7 @@ interface KpiCardProps {
 
 function KpiCard({ label, value, sub, icon: Icon, iconColor, bgColor, sparkData, sparkColor }: KpiCardProps) {
   return (
-    <div className="bg-card shadow-sm border border-border rounded-xl p-5 flex flex-col gap-3 hover:border-border transition-colors">
+    <div className="glass-card shadow-sm rounded-xl p-5 flex flex-col gap-3 hover:border-white/40 transition-colors">
       <div className="flex items-start justify-between">
         <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${bgColor}`}>
           <Icon size={18} className={iconColor} />
@@ -465,7 +465,7 @@ export default function AdminDashboard() {
             {showNotifications && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)} />
-                <div className="absolute right-0 mt-2 w-80 bg-card border border-border shadow-2xl rounded-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 mt-2 w-80 glass-card-strong shadow-2xl rounded-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="px-4 py-3 border-b border-border bg-secondary/50">
                     <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Notifications</h3>
                   </div>
@@ -527,8 +527,8 @@ export default function AdminDashboard() {
           value={String(stats.activeSalesUsers)}
           sub="Profiles with sales roles"
           icon={Briefcase}
-          iconColor="text-amber-400"
-          bgColor="bg-amber-500/10"
+          iconColor="text-[#F1AE27]"
+          bgColor="bg-[#F1AE27]/10"
         />
         <KpiCard
           label="Quotes Sent"
@@ -551,7 +551,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        <div className="xl:col-span-2 bg-card shadow-sm border border-border rounded-xl overflow-hidden flex flex-col">
+        <div className="xl:col-span-2 glass-card-strong shadow-sm rounded-xl overflow-hidden flex flex-col">
           <div className="flex items-center justify-between px-5 py-4 border-b border-border">
             <div>
               <h3 className="text-sm font-semibold text-foreground">Product Performance</h3>
@@ -595,7 +595,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-card shadow-sm border border-border rounded-xl p-5 flex flex-col justify-between">
+        <div className="glass-card-strong shadow-sm rounded-xl p-5 flex flex-col justify-between">
           <div className="mb-4">
             <h3 className="text-sm font-semibold text-foreground">Product Status</h3>
             <p className="text-[11px] text-muted-foreground mt-0.5">Published, draft, and archived inventory</p>
@@ -617,7 +617,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        <div className="bg-card shadow-sm border border-border rounded-xl p-5 flex flex-col">
+        <div className="glass-card-strong shadow-sm rounded-xl p-5 flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-sm font-semibold text-foreground">Sales Activity</h3>
@@ -653,7 +653,7 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        <div className="bg-card shadow-sm border border-border rounded-xl p-5 flex flex-col justify-between">
+        <div className="glass-card-strong shadow-sm rounded-xl p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-1">
               <h3 className="text-sm font-semibold text-foreground">Quote Analytics</h3>
@@ -705,7 +705,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-card shadow-sm border border-border rounded-xl p-5 flex flex-col">
+        <div className="glass-card-strong shadow-sm rounded-xl p-5 flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-sm font-semibold text-foreground">Revenue Forecast</h3>
@@ -755,7 +755,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        <div className="xl:col-span-2 bg-card shadow-sm border border-border rounded-xl p-5">
+        <div className="xl:col-span-2 glass-card-strong shadow-sm rounded-xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-sm font-semibold text-foreground">Product Operations Summary</h3>
@@ -778,7 +778,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-card shadow-sm border border-border rounded-xl p-5">
+        <div className="glass-card-strong shadow-sm rounded-xl p-5">
           <h3 className="text-sm font-semibold text-foreground mb-4">Quick Actions</h3>
           <div className="space-y-2">
             {[

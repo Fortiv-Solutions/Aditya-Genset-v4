@@ -138,7 +138,7 @@ const socialRows: { key: keyof Pick<SiteConfig, "linkedin" | "facebook" | "insta
 
 function SettingSection({ title, icon: Icon, children }: SettingSectionProps) {
   return (
-    <div className="bg-card shadow-sm border border-border rounded-xl overflow-hidden">
+    <div className="glass-card-strong shadow-sm rounded-xl overflow-hidden">
       <div className="flex items-center gap-3 px-5 py-4 border-b border-border bg-secondary">
         <div className="w-7 h-7 rounded-lg bg-accent/15 flex items-center justify-center">
           <Icon size={14} className="text-accent" />
@@ -416,7 +416,7 @@ export default function AdminSettings() {
       )}
 
       {loading && (
-        <div className="rounded-xl border border-border bg-card px-5 py-8 text-center text-sm text-muted-foreground">
+        <div className="rounded-xl glass-panel px-5 py-8 text-center text-sm text-muted-foreground">
           Loading {activeLabel.toLowerCase()}...
         </div>
       )}

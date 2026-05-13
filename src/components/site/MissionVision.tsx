@@ -5,7 +5,7 @@ import { EditableText } from "@/components/cms/EditableText";
 
 export function MissionVision({ id }: { id?: string }) {
   return (
-    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-secondary/40 pt-16 md:pt-0">
+    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-brand-warm-gray pt-16 md:pt-0">
       <div className="container-x">
         <div className="grid gap-8 lg:grid-cols-2">
           
@@ -13,14 +13,14 @@ export function MissionVision({ id }: { id?: string }) {
           <SectionReveal variant="slideLeft" threshold={0.2}>
             <motion.div 
               whileHover={{ scale: 1.02, rotate: -0.5 }}
-              className="group relative h-full overflow-hidden rounded-sm border border-border bg-white p-10 transition-shadow duration-500 hover:border-accent hover:shadow-[0_20px_50px_rgba(242,169,0,0.15)]"
+              className="group relative h-full overflow-hidden rounded-sm border border-white/40 bg-white/60 backdrop-blur-xl p-10 transition-shadow duration-500 hover:border-accent hover:shadow-[0_20px_50px_rgba(242,169,0,0.15)]"
             >
               <div className="absolute top-0 right-0 -mr-8 -mt-8 opacity-5 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12">
                 <Target size={180} />
               </div>
               
               <div className="relative">
-                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-amber-gradient text-foreground shadow-lg group-hover:animate-pulse-ring">
+                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gold-gradient text-foreground shadow-lg group-hover:animate-pulse-ring">
                   <Target size={32} />
                 </div>
                 <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">

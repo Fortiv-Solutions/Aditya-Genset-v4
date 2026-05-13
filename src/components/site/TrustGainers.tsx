@@ -15,31 +15,31 @@ const ITEM_KEYS = [
 
 export function TrustGainers({ id }: { id?: string }) {
   return (
-    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-brand-navy pt-16 text-white md:pt-0">
+    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-brand-warm-gray pt-16 text-foreground md:pt-0">
       {/* ─── Premium Industrial Background ─── */}
       <div className="pointer-events-none absolute inset-0 select-none">
         {/* Animated Grid Overlay */}
         <div 
-          className="absolute inset-0 opacity-[0.08]" 
+          className="absolute inset-0 opacity-[0.04]" 
           style={{ 
-            backgroundImage: `linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(to right, black 1px, transparent 1px), linear-gradient(to bottom, black 1px, transparent 1px)`,
             backgroundSize: '40px 40px'
           }}
         />
         
         {/* Large Decorative Text Watermark */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-bold leading-none text-white/[0.02] tracking-tighter uppercase whitespace-nowrap select-none">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-bold leading-none text-black/[0.01] tracking-tighter uppercase whitespace-nowrap select-none">
           EXCELLENCE
         </div>
 
-        {/* Cinematic Lighting Blobs — radial gradients, zero blur cost */}
+        {/* Cinematic Lighting Blobs */}
         <div 
           className="absolute top-1/4 -left-20 h-[500px] w-[500px] rounded-full animate-float-slow"
-          style={{ background: "radial-gradient(circle at center, rgba(242,169,0,0.2) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle at center, rgba(242,169,0,0.1) 0%, transparent 70%)" }}
         />
         <div 
           className="absolute bottom-1/4 -right-20 h-[600px] w-[600px] rounded-full animate-float-slower"
-          style={{ background: "radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle at center, rgba(11,58,92,0.05) 0%, transparent 70%)" }}
         />
         
         {/* Noise Texture */}
@@ -73,7 +73,7 @@ export function TrustGainers({ id }: { id?: string }) {
               >
                 <motion.div
                   whileHover={{ y: -12, scale: 1.01 }}
-                  className="group relative flex flex-col h-full overflow-hidden rounded-sm border border-white/10 bg-white/[0.06] p-8 shadow-md transition-all duration-500 hover:border-accent/40 hover:bg-white/[0.12] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]"
+                  className="group relative flex flex-col h-full overflow-hidden rounded-sm border border-white/40 bg-white/60 backdrop-blur-xl p-8 shadow-md transition-all duration-500 hover:border-accent/40 hover:bg-white/80 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)]"
                 >
                   {/* Corner Accent */}
                   <div className="absolute top-0 left-0 h-1 w-0 bg-accent transition-all duration-500 group-hover:w-full" />
@@ -81,15 +81,15 @@ export function TrustGainers({ id }: { id?: string }) {
                   <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-sm bg-accent text-brand-navy shadow-[0_0_20px_rgba(242,169,0,0.3)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-white">
                     <Icon size={26} strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-white group-hover:text-accent transition-colors duration-300">
+                  <h3 className="font-display text-xl font-bold tracking-tight text-foreground group-hover:text-accent transition-colors duration-300">
                     <EditableText section="trustGainers" contentKey={keys.titleKey} />
                   </h3>
-                  <p className="mt-3 text-sm text-white/60 leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
                     <EditableText section="trustGainers" contentKey={keys.bodyKey} />
                   </p>
                   
                   {/* Decorative Icon Background */}
-                  <div className="absolute -bottom-4 -right-4 text-8xl font-bold text-white/[0.03] transition-all duration-500 group-hover:text-accent/[0.05] group-hover:scale-110">
+                  <div className="absolute -bottom-4 -right-4 text-8xl font-bold text-black/[0.02] transition-all duration-500 group-hover:text-accent/[0.05] group-hover:scale-110">
                     <Icon size={120} />
                   </div>
                 </motion.div>

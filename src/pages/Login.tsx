@@ -258,7 +258,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="group relative w-full flex items-center justify-center gap-2 py-3.5 bg-amber-gradient rounded-sm text-sm font-bold text-brand-navy-deep transition-all duration-300 ease-out hover:shadow-[0_0_20px_rgba(255,176,0,0.4)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="group relative w-full flex items-center justify-center gap-2 py-3.5 bg-gold-gradient rounded-sm text-sm font-bold text-brand-navy-deep transition-all duration-300 ease-out hover:shadow-[0_0_20px_rgba(241,174,39,0.4)] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? "Authenticating..." : "Secure Login"}
                 {!isLoading && <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />}

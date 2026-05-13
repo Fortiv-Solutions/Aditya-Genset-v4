@@ -4,13 +4,14 @@ A modern, interactive website for Aditya Genset showcasing diesel generators wit
 
 ## 🚀 Features
 
+- **Global Keyboard Navigation** - Presentation-ready arrow key navigation across pages
 - **Interactive 3D Models** - View generator models in 3D using Three.js
+- **ScrollStory & Video** - Scroll-based storytelling with interactive video playback
 - **Responsive Design** - Fully responsive across all devices
 - **Modern UI** - Built with React, TypeScript, and Tailwind CSS
 - **Component Library** - Shadcn/ui components for consistent design
 - **Smooth Animations** - Framer Motion for engaging user experience
 - **Product Catalog** - Comprehensive product listings and details
-- **Dealer Network** - Interactive dealer network information
 
 ## 📋 Prerequisites
 
@@ -22,8 +23,8 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Fortiv-Solutions/aditya-genset-v2.git
-   cd aditya-genset-v2
+   git clone https://github.com/Fortiv-Solutions/Aditya-Genset-v4.git
+   cd Aditya-Genset-v4
    ```
 
 2. **Install dependencies**
@@ -104,7 +105,7 @@ npm run lint
 ## 📁 Project Structure
 
 ```
-aditya-genset-v2/
+Aditya-Genset-v4/
 ├── public/              # Static assets
 │   ├── models/         # 3D model files (.glb)
 │   └── ...

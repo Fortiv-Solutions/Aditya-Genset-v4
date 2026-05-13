@@ -19,7 +19,7 @@ const STAGE_LABELS: Record<Stage, string> = {
 
 const CONFIDENCE_COLORS = {
   high: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-  medium: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+  medium: "text-[#F1AE27] bg-[#F1AE27]/10 border-[#F1AE27]/20",
   low: "text-red-400 bg-red-500/10 border-red-500/20",
 };
 
@@ -143,7 +143,7 @@ export function PDFImportZone({ onExtracted }: PDFImportZoneProps) {
           ) : (
             <div className="relative">
               <FileText size={22} className="text-muted-foreground group-hover:text-accent transition-colors" />
-              <Sparkles size={10} className="absolute -top-1 -right-1 text-amber-400" />
+              <Sparkles size={10} className="absolute -top-1 -right-1 text-[#F1AE27]" />
             </div>
           )}
         </div>
@@ -188,7 +188,7 @@ export function PDFImportZone({ onExtracted }: PDFImportZoneProps) {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-secondary border-b border-border">
             <div className="flex items-center gap-3">
-              <Sparkles size={14} className="text-amber-400" />
+              <Sparkles size={14} className="text-[#F1AE27]" />
               <span className="text-sm font-semibold text-foreground">
                 {result.data.extractionSource === "local-fallback" ? "PDF Extracted Fields" : "AI Extracted Fields"}
               </span>
@@ -382,7 +382,7 @@ export function PDFImportZone({ onExtracted }: PDFImportZoneProps) {
           {/* AI notes & extra specs */}
           {showPreview && result.data.rawNotes && (
             <div className="px-4 pb-3 bg-background">
-              <p className="text-[11px] text-amber-400/80 bg-amber-500/5 border border-amber-500/15 rounded-lg px-3 py-2">
+              <p className="text-[11px] text-[#F1AE27]/80 bg-[#F1AE27]/5 border border-[#F1AE27]/15 rounded-lg px-3 py-2">
                 Extraction note: {result.data.rawNotes}
               </p>
             </div>
@@ -406,13 +406,13 @@ export function PDFImportZone({ onExtracted }: PDFImportZoneProps) {
 
       {/* API Key hint */}
       {!import.meta.env.VITE_GEMINI_API_KEY && stage === "idle" && (
-        <p className="text-[11px] text-amber-500/70 bg-amber-500/5 border border-amber-500/15 rounded-lg px-3 py-2">
+        <p className="text-[11px] text-[#F1AE27]/70 bg-[#F1AE27]/5 border border-[#F1AE27]/15 rounded-lg px-3 py-2">
           Add <code className="font-mono">VITE_GEMINI_API_KEY=your_key</code> to your <code className="font-mono">.env</code> file to enable AI extraction. Local PDF parsing still works without it.{" "}
           <a
             href="https://aistudio.google.com/app/apikey"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline text-amber-400 hover:text-amber-300"
+            className="underline text-[#F1AE27] hover:text-[#F1AE27]/80"
           >
             Get a free key
           </a>

@@ -12,7 +12,7 @@ const STEP_KEYS = [
 
 export function ManufacturingProcess({ id }: { id?: string }) {
   return (
-    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center bg-secondary/30 pt-16 md:pt-0">
+    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center bg-brand-warm-gray py-20 overflow-hidden">
       <div className="container-x">
         <SectionReveal className="text-center" variant="fadeUp">
           <div className="font-display text-xs uppercase tracking-[0.3em] text-accent">
@@ -39,11 +39,8 @@ export function ManufacturingProcess({ id }: { id?: string }) {
               const Icon = ICONS[i];
               return (
                 <div key={keys.titleKey} className="relative flex flex-col items-center text-center group">
-                  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-foreground text-white shadow-xl transition-transform duration-500 group-hover:scale-110 group-hover:bg-accent group-hover:text-foreground">
+                  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white/40 bg-brand-navy text-white shadow-xl transition-transform duration-500 group-hover:scale-110 group-hover:bg-accent group-hover:text-foreground">
                     <Icon size={32} />
-                    <div className="absolute -bottom-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full bg-border text-xs font-bold text-muted-foreground group-hover:bg-brand-navy group-hover:text-white transition-colors duration-500">
-                      {i + 1}
-                    </div>
                   </div>
                   <h3 className="font-display text-xl font-bold text-foreground">
                     <EditableText section="manufacturingProcess" contentKey={keys.titleKey} />

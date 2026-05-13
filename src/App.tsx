@@ -14,8 +14,7 @@ import {
 } from "@/components/auth/AuthRoutes";
 import { ADMIN_ROLES } from "@/lib/auth";
 import { CMSEditorProvider } from "./components/cms/CMSEditorProvider";
-import { CompareProvider } from "./context/CompareContext";
-import { QuoteProvider } from "./context/QuoteContext";
+
 
 // Site Pages
 import Home from "./pages/Home";
@@ -24,8 +23,7 @@ import ProductDetail from "./pages/ProductDetail";
 import DGSetsCategory from "./pages/DGSetsCategory";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-import CompareProducts from "./pages/CompareProducts";
-import QuoteBuilder from "./pages/QuoteBuilder";
+
 
 // Admin Layout
 import AdminLayout from "./components/admin/AdminLayout";
@@ -83,9 +81,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <CMSEditorProvider>
-            <CompareProvider>
-              <QuoteProvider>
-                <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                   <Routes>
                     {/* ── Public ─────────────────────────────────── */}
                     <Route path="/login" element={<LoginRedirect><Login /></LoginRedirect>} />
@@ -140,8 +136,7 @@ const App = () => {
                                 <Route path="/products" element={<Products />} />
                                 <Route path="/products/dg-sets" element={<DGSetsCategory />} />
                                 <Route path="/products/:slug" element={<ProductDetail />} />
-                                <Route path="/compare" element={<CompareProducts />} />
-                                <Route path="/quote-builder" element={<QuoteBuilder />} />
+
                                 <Route path="*" element={<NotFound />} />
                               </Routes>
                             </RouteFade>
@@ -151,8 +146,6 @@ const App = () => {
                     />
                   </Routes>
                 </BrowserRouter>
-              </QuoteProvider>
-            </CompareProvider>
           </CMSEditorProvider>
         </AuthProvider>
       </TooltipProvider>

@@ -15,7 +15,7 @@ export function ProgressRail({ count, active, labels, images, videoUrls, onJump 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   return (
-    <div className={cn("hidden lg:flex flex-col gap-3", mounted ? "opacity-100" : "opacity-0", "transition-opacity duration-500")}>
+    <div className={cn("hidden lg:flex flex-col justify-start h-full gap-3 pt-36", mounted ? "opacity-100" : "opacity-0", "transition-opacity duration-500")}>
       {Array.from({ length: count }).map((_, i) => {
         const isActive = i === active;
         return (
@@ -38,7 +38,7 @@ export function ProgressRail({ count, active, labels, images, videoUrls, onJump 
                   loading="lazy"
                   decoding="async"
                   className={cn(
-                    "h-full w-full object-cover transition-all duration-500",
+                    "h-full w-full object-top transition-all duration-500",
                     isActive ? "grayscale-0" : "grayscale group-hover:grayscale-0"
                   )}
                 />

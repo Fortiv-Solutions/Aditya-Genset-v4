@@ -77,7 +77,7 @@ export default function CMSEditor() {
   return (
     <div className="fixed inset-0 z-[100] bg-background flex flex-col">
       {/* Editor Top Bar */}
-      <div className="h-14 bg-card border-b border-border shadow-sm flex items-center justify-between px-4 z-[101]">
+      <div className="h-14 glass-panel border-b border-border shadow-sm flex items-center justify-between px-4 z-[101]">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate("/admin/cms")}

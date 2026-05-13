@@ -1,80 +1,69 @@
-import { useCallback, useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ShowcaseProduct } from "@/data/products";
 import { StickyImageStack } from "./StickyImageStack";
 import { ProgressRail } from "./ProgressRail";
-import { Hotspots } from "./Hotspots";
-import { CountUp } from "./CountUp";
 import { cn } from "@/lib/utils";
-import { GuidedPresentation } from "./GuidedPresentation";
 import { SmoothImage } from "@/components/ui/SmoothImage";
 import { EditableText } from "@/components/cms/EditableText";
-import { useCMSState } from "@/components/cms/CMSEditorProvider";
 import { VerticalNav } from "./VerticalNav";
-import type { NavSection } from "./VerticalNav";
-import type { CMSSection } from "@/lib/sanity";
 import { ChapterInteractive } from "./ChapterInteractive";
-import { Clock, MonitorPlay, Clapperboard } from "lucide-react";
+import ProductViewer360 from "./ProductViewer360";
+import { Maximize2, Minimize2, ArrowLeft, Play } from "lucide-react";
 
+// Nav height offset for sticky panel
+const NAV_HEIGHT = 90;
 
-// No fixed header bar — ScrollStory takes full viewport height
-const HEADER_H = 0;
-
-interface Props { 
-  product: ShowcaseProduct; 
+interface Props {
+  product: ShowcaseProduct;
   sectionId?: "showcaseData" | string;
-  /** Pixels to offset the first chapter so it clears the absolute header overlay */
   firstChapterOffset?: number;
-  /** Called whenever the active chapter index changes */
   onChapterChange?: (index: number) => void;
-  /** Database-driven chapter data map (v2). If provided, static imports are not used. */
   chapterDataMap?: Record<string, any>;
 }
 
-export const ScrollStory = forwardRef<{ enterPresentMode: () => void }, Props>(({ product, sectionId = "showcaseData", firstChapterOffset = 0, onChapterChange, chapterDataMap }, ref) => {
+export function ScrollStory({
+  product,
+  sectionId = "showcaseData",
+  firstChapterOffset = 0,
+  onChapterChange,
+  chapterDataMap,
+}: Props) {
+  const navigate = useNavigate();
   const [active, setActive] = useState(0);
+  const [isPresenting, setIsPresenting] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const colHeight = isPresenting ? "100vh" : `calc(100vh - ${NAV_HEIGHT}px)`;
+
+  // Listen for custom event from Navbar
+  useEffect(() => {
+    const handlePresentChange = (e: any) => {
+      setIsPresenting(e.detail);
+    };
+    window.addEventListener("presentModeChange", handlePresentChange);
+    return () => window.removeEventListener("presentModeChange", handlePresentChange);
+  }, []);
+
+  // Reset video state when chapter changes
+  useEffect(() => {
+    setIsVideoPlaying(false);
+  }, [active]);
+
+  const handlePlayVideo = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play();
+      setIsVideoPlaying(true);
+    }
+  };
 
   // Notify parent whenever active chapter changes
   useEffect(() => { onChapterChange?.(active); }, [active, onChapterChange]);
-  const [isPresenting, setIsPresenting] = useState(false);
+
   const refs = useRef<(HTMLElement | null)[]>([]);
   const rightColRef = useRef<HTMLDivElement>(null);
   const isJumping = useRef(false);
-
-  useImperativeHandle(ref, () => ({
-    enterPresentMode: () => setIsPresenting(true)
-  }));
-
-  // Present-mode body class
-  useEffect(() => {
-    if (isPresenting) {
-      document.body.classList.add("present-mode");
-    } else {
-      document.body.classList.remove("present-mode");
-    }
-    return () => { document.body.classList.remove("present-mode"); };
-  }, [isPresenting]);
-
-  // IntersectionObserver — uses the right column as its root so it tracks
-  // the column's internal scroll, not the page scroll.
-  useEffect(() => {
-    if (isPresenting) return;
-    const root = rightColRef.current;
-    if (!root) return;
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const i = Number((e.target as HTMLElement).dataset.index);
-            setActive(i);
-          }
-        });
-      },
-      { root, rootMargin: "-40% 0px -40% 0px", threshold: 0 },
-    );
-    refs.current.forEach((el) => el && obs.observe(el));
-    return () => obs.disconnect();
-  }, [isPresenting]);
 
   const jumpTo = useCallback((i: number) => {
     const el = refs.current[i];
@@ -94,9 +83,8 @@ export const ScrollStory = forwardRef<{ enterPresentMode: () => void }, Props>((
     }, 700);
   }, [jumpTo, product.sections.length]);
 
-  // Wheel interceptor — one wheel tick = one chapter advance/retreat
+  // Wheel interceptor
   useEffect(() => {
-    if (isPresenting) return;
     const col = rightColRef.current;
     if (!col) return;
 
@@ -110,112 +98,149 @@ export const ScrollStory = forwardRef<{ enterPresentMode: () => void }, Props>((
 
     col.addEventListener("wheel", onWheel, { passive: false });
     return () => col.removeEventListener("wheel", onWheel);
-  }, [active, advanceTo, isPresenting, product.sections.length]);
+  }, [active, advanceTo, product.sections.length]);
 
+  // Keyboard navigation
   useEffect(() => {
-    if (isPresenting) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      const isTyping =
-        target?.tagName === "INPUT" ||
-        target?.tagName === "TEXTAREA" ||
-        target?.isContentEditable;
-
-      if (isTyping) return;
-
-      if (event.key === "PageDown" || event.key === "ArrowDown" || event.key === " ") {
-        event.preventDefault();
-        advanceTo(active + 1);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        document.activeElement?.tagName === "INPUT" ||
+        document.activeElement?.tagName === "TEXTAREA" ||
+        (document.activeElement as HTMLElement)?.isContentEditable
+      ) {
+        return;
       }
-
-      if (event.key === "PageUp" || event.key === "ArrowUp") {
-        event.preventDefault();
-        advanceTo(active - 1);
+      
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        if (active < product.sections.length - 1) {
+          advanceTo(active + 1);
+        } else {
+          navigate("/products");
+        }
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (active > 0) {
+          advanceTo(active - 1);
+        } else {
+          navigate("/");
+        }
       }
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [active, advanceTo, isPresenting]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [active, advanceTo, product.sections.length, navigate]);
 
-  // Build nav sections from product chapters
-  const navSections: NavSection[] = (product.sections || []).map((s, i) => ({
-    id: `chapter-${i}`,
-    label: s.id,
-  }));
+  // IntersectionObserver for the right column
+  useEffect(() => {
+    const root = rightColRef.current;
+    if (!root) return;
 
-  // If no sections, show a message
-  if (!product.sections || product.sections.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">No Product Details Available</h2>
-          <p className="text-muted-foreground">This product doesn't have detailed sections yet.</p>
-        </div>
-      </div>
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const i = Number((e.target as HTMLElement).dataset.index);
+            setActive(i);
+          }
+        });
+      },
+      { root, rootMargin: "-40% 0px -40% 0px", threshold: 0 },
     );
-  }
+    refs.current.forEach((el) => el && obs.observe(el));
+    return () => obs.disconnect();
+  }, [product.sections]);
 
-  if (isPresenting) {
-    return <GuidedPresentation onClose={() => setIsPresenting(false)} sectionId={sectionId} product={product} chapterDataMap={chapterDataMap} />;
-  }
-
-  const colHeight = `calc(100vh - ${HEADER_H}px)`;
+  // Map specs for ProductViewer360
+  const allSpecs = product.sections.flatMap(s => (s.specs || []).map(sp => ({ ...sp, group: s.title })));
 
   return (
-    <section className="relative">
-      {/* ── Desktop split layout ───────────────────────────────────────── */}
-      <div className="container-showcase hidden lg:grid lg:grid-cols-12 lg:gap-10 xl:gap-12" style={{ height: colHeight }}>
-
-        {/* Left — sticky image + progress rail */}
+    <section
+      className={cn(
+        "relative transition-all duration-700 ease-brand",
+        isPresenting ? "fixed inset-0 z-[100] bg-white" : "w-full"
+      )}
+    >
+      <div className={cn(
+        "hidden lg:flex w-full px-8 xl:px-16",
+        isPresenting ? "h-screen" : ""
+      )}>
+        {/* LEFT PANEL — Title + Product Viewer */}
         <aside
-          className="col-span-6 flex min-w-0 items-center self-start"
-          style={{ height: colHeight, position: "sticky", top: HEADER_H }}
+          className="flex-1 flex min-w-0 self-start"
+          style={{ height: colHeight, position: "sticky", top: isPresenting ? 0 : NAV_HEIGHT }}
         >
-          <div className="flex h-full w-full min-w-0 items-center gap-8 py-6 xl:gap-12 2xl:gap-16">
+          <div className="flex h-full w-full min-w-0 gap-8 xl:gap-12 2xl:gap-16">
             <div className="flex h-full min-w-0 flex-1 flex-col">
+              {/* Active section header — above 3D model */}
+              <div className="pt-12 pb-2 px-2">
+                <button
+                  onClick={() => window.history.back()}
+                  className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors mb-6 cursor-pointer"
+                >
+                  <ArrowLeft size={10} /> Back to category
+                </button>
 
-              {active === 0 ? (
-                /* ── Slide 1: image centred, no title above ── */
-                <div className="flex-1 flex items-center">
-                  <div className="relative aspect-square w-full max-w-full overflow-hidden rounded-sm">
-                    <div className="relative w-full h-full flex items-center justify-center">
-                      <SmoothImage
-                        src={product.sections[0]?.image}
-                        alt={product.sections[0]?.alt}
-                        wrapperClassName="w-full h-full absolute inset-0 bg-transparent"
-                        imageClassName="w-[120%] h-[120%] object-contain transition-all duration-700"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                /* ── Slides 2+: chapter title above image ── */
-                <>
-                  {/* Chapter title block — uses the space above the image */}
-                  <div className="min-w-0 pt-2 pb-5 transition-all duration-500 ease-brand">
-                    <div className="font-display text-[10px] uppercase tracking-[0.45em] text-accent mb-1.5 flex items-center">
-                      <EditableText section={sectionId as any} contentKey={`chapter_${active}_number`} fallback={product.sections[active]?.number} as="span" />
-                      <span className="mx-2">/</span>
-                      <EditableText section={sectionId as any} contentKey={`chapter_${active}_id`} fallback={product.sections[active]?.id} as="span" />
-                    </div>
-                    <h2 className="max-w-full break-words font-display text-3xl font-semibold leading-tight md:text-4xl">
-                      <EditableText section={sectionId as any} contentKey={`chapter_${active}_title`} fallback={product.sections[active]?.title} as="span" />
+                {product.sections.map((s, i) => (
+                  <div
+                    key={s.id}
+                    className={cn(
+                      "transition-all duration-500 ease-brand",
+                      active === i
+                        ? "opacity-100 translate-y-0 block"
+                        : "opacity-0 translate-y-2 hidden"
+                    )}
+                  >
+                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-1">
+                      {s.number} / {s.title}
+                    </p>
+                    <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground leading-tight">
+                      {product.name.replace("Silent DG Set powered by Escorts Kubota engine. CPCB IV+ compliant extraction from datasheet.", "Silent DG Set")}
                     </h2>
-                    {/* Decorative rule */}
-                    <div className="mt-4 flex items-center gap-3">
-                      <div className="h-px w-8 bg-accent" />
-                      <div className="h-px flex-1 bg-border" />
-                    </div>
+                    {s.tagline && !s.tagline.includes("extraction from datasheet") && (
+                      <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed max-w-md">
+                        {s.tagline}
+                      </p>
+                    )}
                   </div>
-                </div>
+                ))}
+              </div>
 
-                {/* Image fills remaining space */}
-                <div className="flex-1 min-h-0">
-                  <StickyImageStack sections={product.sections} active={active} />
+              {/* 3D Model / Video — Large and centered for Overview, smaller/shifted for others */}
+              <div className={cn(
+                "flex items-center relative transition-all duration-500 min-h-0",
+                active === 0 ? "h-[750px] justify-center" : "h-[400px] justify-start pt-2"
+              )}>
+                <div className="w-full max-w-full h-full relative flex items-center justify-center">
+                  {active === product.sections.length - 1 && product.sections[active].videoUrl ? (
+                    <div className="relative w-full h-full group flex items-center justify-center">
+                      <video
+                        ref={videoRef}
+                        src={product.sections[active].videoUrl}
+                        controls={isVideoPlaying}
+                        playsInline
+                        className="w-full h-full object-contain mix-blend-multiply"
+                        onEnded={() => setIsVideoPlaying(false)}
+                      />
+                      {!isVideoPlaying && (
+                        <button
+                          onClick={handlePlayVideo}
+                          className="absolute inset-0 m-auto flex items-center justify-center w-20 h-20 bg-accent text-primary-foreground rounded-full shadow-2xl transition-transform hover:scale-110 z-10"
+                        >
+                          <Play size={32} className="ml-1" />
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <ProductViewer360 
+                      specs={allSpecs} 
+                      modelName={product.name.split("powered")[0].trim()} 
+                      frames={[]} 
+                    />
+                  )}
                 </div>
-              </>
+              </div>
             </div>
 
             <ProgressRail
@@ -229,10 +254,10 @@ export const ScrollStory = forwardRef<{ enterPresentMode: () => void }, Props>((
           </div>
         </aside>
 
-        {/* Right — snap-scroll chapter column */}
+        {/* RIGHT PANEL — Content column */}
         <div
           ref={rightColRef}
-          className="col-span-6 min-w-0 overflow-y-auto"
+          className="w-[420px] shrink-0 min-w-0 overflow-y-auto ml-10 xl:ml-12"
           style={{
             height: colHeight,
             scrollbarWidth: "none",
@@ -241,10 +266,10 @@ export const ScrollStory = forwardRef<{ enterPresentMode: () => void }, Props>((
         >
           {(product.sections || []).map((s, i) => {
             const isEscorts = product.engineBrand === "Escorts";
-            // V2: use database-driven chapterDataMap
             const chapterData = chapterDataMap ? chapterDataMap[s.id] : undefined;
             const mergedData = isEscorts ? { ...(chapterData || {}), ...s } : null;
-            const articlePaddingTop = Math.max(firstChapterOffset, 24);
+            const articlePaddingTop = i === 0 ? Math.max(firstChapterOffset, 24) : 24;
+
             return (
               <article
                 key={s.id}
@@ -253,10 +278,11 @@ export const ScrollStory = forwardRef<{ enterPresentMode: () => void }, Props>((
                 className="flex min-w-0 flex-col justify-start"
                 style={{
                   height: colHeight,
-                  paddingTop: articlePaddingTop,
-                  paddingBottom: 24,
+                  paddingTop: 100,
+                  paddingBottom: 40,
                 }}
               >
+                {/* Section Content */}
                 {isEscorts && mergedData ? (
                   <ChapterInteractive
                     chapterId={s.id}
@@ -274,44 +300,37 @@ export const ScrollStory = forwardRef<{ enterPresentMode: () => void }, Props>((
         </div>
       </div>
 
-      {/* ── Mobile stacked layout ──────────────────────────────────────── */}
+
+
+      {/* MOBILE STACKED LAYOUT */}
       <div className="container-x lg:hidden">
-        {product.sections.map((s, i) => {
-          const isEscortsMobile = product.engineBrand === "Escorts";
-          return (
-            <article
-              key={s.id}
-              className="py-12 border-b border-border last:border-0"
-            >
-              {!isEscortsMobile && (
-                <div className="mb-6 aspect-square overflow-hidden rounded-sm bg-muted">
-                  <SmoothImage src={s.image} alt={s.alt} loading="lazy" wrapperClassName="h-full w-full" imageClassName="h-full w-full object-cover" />
-                </div>
-              )}
-              {isEscortsMobile ? (
-                <ChapterInteractive chapterId={s.id} data={s as any} active={true} sectionId={sectionId} index={i} />
-              ) : (
-                <SectionContent section={s} active index={i} sectionId={sectionId} />
-              )}
-            </article>
-          );
-        })}
+        {product.sections.map((s, i) => (
+          <article key={s.id} className="py-12 border-b border-border last:border-0">
+            {product.engineBrand !== "Escorts" && (
+              <div className="mb-6 aspect-square overflow-hidden rounded-sm bg-muted">
+                <SmoothImage src={s.image} alt={s.alt} loading="lazy" wrapperClassName="h-full w-full" imageClassName="h-full w-full object-cover" />
+              </div>
+            )}
+            {product.engineBrand === "Escorts" ? (
+              <ChapterInteractive chapterId={s.id} data={s as any} active={true} sectionId={sectionId} index={i} />
+            ) : (
+              <SectionContent section={s} active index={i} sectionId={sectionId} />
+            )}
+          </article>
+        ))}
       </div>
 
-      {/* Vertical Dot Nav — controlled by active chapter */}
+      {/* Vertical Dot Nav */}
       <VerticalNav
-        sections={navSections}
+        sections={product.sections.map(s => ({ id: s.id, label: s.title }))}
         activeIndex={active}
         onDotClick={jumpTo}
       />
     </section>
   );
-});
-
-ScrollStory.displayName = 'ScrollStory';
+}
 
 function getSectionBadges(id: string, index: number) {
-  // Default overview badges
   if (index === 0) {
     return [
       { icon: "✓", text: "CPCB IV+ Compliant" },
@@ -321,215 +340,48 @@ function getSectionBadges(id: string, index: number) {
       { icon: "📋", text: "ISO 9001:2015" },
     ];
   }
-
-  // Section-specific badges
-  switch (id) {
-    case "engine":
-      return [
-        { icon: "⚙️", text: "2-Cylinder" },
-        { icon: "🐎", text: "1500 RPM" },
-        { icon: "💧", text: "Water Cooled" },
-        { icon: "⛽", text: "Fuel Efficient" },
-      ];
-    case "power":
-      return [
-        { icon: "⚡", text: "Stamford Alternator" },
-        { icon: "🔋", text: "3-Phase / 415V" },
-        { icon: "🎯", text: "Stable Frequency" },
-        { icon: "🛡️", text: "H-Class Insulation" },
-      ];
-    case "sound":
-      return [
-        { icon: "🔇", text: "70 dB(A) @ 1m" },
-        { icon: "🏠", text: "Residential Silent" },
-        { icon: "🧱", text: "CRCA Steel Body" },
-        { icon: "🌧️", text: "IP23 Protection" },
-      ];
-    case "control":
-      return [
-        { icon: "🖥️", text: "Digital Control" },
-        { icon: "🛡️", text: "AMF Compatible" },
-        { icon: "📊", text: "Event Logging" },
-        { icon: "🔌", text: "Remote Start" },
-      ];
-    case "dimensions":
-      return [
-        { icon: "📏", text: "Compact Footprint" },
-        { icon: "🏗️", text: "Easy Lifting Eye" },
-        { icon: "🚚", text: "Logistics Ready" },
-      ];
-    case "fuel":
-      return [
-        { icon: "⛽", text: "HSD Fuel" },
-        { icon: "🛢️", text: "15W40 CI4 Oil" },
-        { icon: "🌡️", text: "75°C Thermostat" },
-      ];
-    case "alternator":
-      return [
-        { icon: "⚡", text: "Stamford S0L1" },
-        { icon: "🔋", text: "H-Class Insulation" },
-        { icon: "🎯", text: "AS540 AVR" },
-      ];
-    case "electrical":
-      return [
-        { icon: "📐", text: "SCR 0.515" },
-        { icon: "🎛️", text: "±1% Regulation" },
-        { icon: "🔌", text: "8 Reactance Values" },
-      ];
-    case "enclosure":
-      return [
-        { icon: "🔇", text: "70 dB(A) @ 1m" },
-        { icon: "🌧️", text: "IP23 Protected" },
-        { icon: "🌡️", text: "40°C Ambient" },
-      ];
-    case "protection":
-      return [
-        { icon: "🛡️", text: "CE Compliant" },
-        { icon: "⚡", text: "ANSI 27/59/51" },
-        { icon: "🔒", text: "5 Engine Shutdowns" },
-      ];
-    case "supply":
-      return [
-        { icon: "📦", text: "17 Std. Items" },
-        { icon: "➕", text: "12 Optional Extras" },
-        { icon: "📄", text: "Docs Included" },
-      ];
-    case "video":
-      return [
-        { icon: "🎬", text: "Factory Film" },
-        { icon: "🔊", text: "Full Audio" },
-        { icon: "📺", text: "1080p HD" },
-      ];
-    default:
-      return [
-        { icon: "✨", text: "Premium Quality" },
-        { icon: "🛠️", text: "Expert Support" },
-      ];
-  }
+  return [];
 }
 
+function SectionContent({ section, active, index, sectionId }: { section: any; active: boolean; index: number; sectionId: string }) {
+  const badges = getSectionBadges(section.id, index);
 
-function VideoContent({ active }: { active: boolean }) {
-  const stats = [
-    { icon: Clock, label: "Duration", value: "8 sec" },
-    { icon: MonitorPlay, label: "Resolution", value: "1080p HD" },
-    { icon: Clapperboard, label: "Views", value: "360°" },
-  ];
   return (
-    <div className={cn("mt-6 transition-all duration-700 ease-brand", active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")}>
-      <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-bold mb-1">Official Film</p>
-      <p className="font-display text-lg font-semibold mb-4">Escort DG Set — In Action</p>
-      <div className="relative pl-5 border-l-2 border-accent mb-6">
-        <p className="font-display text-[14px] font-medium text-foreground/80 leading-relaxed italic">
-          Multiple angles of the Escort DG Set — showcasing the final product from every side, including a full 360° view of the complete unit.
+    <div className={cn(
+      "transition-all duration-700 h-full flex flex-col",
+      active ? "opacity-100 translate-y-0" : "opacity-40 translate-y-4"
+    )}>
+      <div className="space-y-6 flex-1">
+
+
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          <EditableText section={sectionId as any} contentKey={`chapter_${index}_tagline`} fallback={section.tagline} as="span" />
         </p>
-      </div>
-      <div className="grid grid-cols-3 gap-3">
-        {stats.map(({ icon: Icon, label, value }) => (
-          <div
-            key={label}
-            className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-muted/40 py-4 px-2 text-center transition-all duration-300 hover:border-accent/30 hover:bg-muted/70"
-          >
-            <Icon size={18} className="text-accent" />
-            <span className="text-[18px] font-bold tabular-nums leading-tight">{value}</span>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-function SectionContent({ section, active, index, sectionId }: { section: ShowcaseProduct["sections"][number]; active: boolean; index: number; sectionId: string }) {
-  const { content, isEditMode } = useCMSState();
-  const sectionKey = sectionId as "showcaseData";
-
-  return (
-    <div className={cn("transition-all duration-700 ease-brand", active ? "opacity-100 translate-y-0" : "opacity-40 translate-y-4")}>
-      {section.videoUrl && <VideoContent active={active} />}
-      {section.tagline && !section.videoUrl && (
-        <div className="mt-6 flex flex-col gap-5">
-          {/* Tagline premium style (Space Grotesk + Italic) */}
-          <div className="relative pl-5 border-l-2 border-accent">
-            <EditableText
-              section={sectionKey}
-              contentKey={`chapter_${index}_tagline`}
-              className="font-display text-[15px] md:text-[17px] font-medium text-foreground/90 leading-relaxed italic block"
-              as="p"
-            />
-          </div>
-
-          {/* Context-aware Feature Badges (Single line, max 3) */}
-          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-            {getSectionBadges(section.id, index).slice(0, 3).map((badge) => (
-              <span
-                key={badge.text}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3 py-1 text-[11px] font-medium text-foreground/70 tracking-wide transition-all duration-300 hover:bg-muted whitespace-nowrap"
-              >
-                <span className="text-accent text-xs">{badge.icon}</span>
-                {badge.text}
+        {badges.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-2">
+            {badges.map((b, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/5 border border-accent/10 text-[10px] font-bold text-accent uppercase tracking-wider">
+                <span className="text-xs">{b.icon}</span> {b.text}
               </span>
             ))}
           </div>
-        </div>
-      )}
+        )}
 
-      {section.highlight && section.highlight.length > 0 && (
-        <div className="mt-8 grid grid-cols-3 gap-6 border-y border-border py-6">
-          {section.highlight.map((h, hIdx) => {
-            const hValueRaw = content?.[sectionKey]?.[`chapter_${index}_h${hIdx}_value`];
-            const hValue = Number(hValueRaw) || Number(h.value) || 0;
-            const hSuffix = content?.[sectionKey]?.[`chapter_${index}_h${hIdx}_suffix`] ?? h.suffix;
-            return (
-              <div key={h.label}>
-                <div className="num-display text-2xl font-semibold md:text-3xl flex items-baseline">
-                  {isEditMode ? (
-                    <>
-                      <EditableText 
-                        section={sectionKey} 
-                        contentKey={`chapter_${index}_h${hIdx}_value`} 
-                        className="inline-block"
-                        as="span"
-                      />
-                      <EditableText 
-                        section={sectionKey} 
-                        contentKey={`chapter_${index}_h${hIdx}_suffix`} 
-                        className="inline-block whitespace-pre"
-                        as="span"
-                      />
-                    </>
-                  ) : (
-                    <CountUp end={hValue} suffix={hSuffix} decimals={hValue % 1 === 0 ? 0 : 1} />
-                  )}
-                </div>
-                <EditableText 
-                  section={sectionKey} 
-                  contentKey={`chapter_${index}_h${hIdx}_label`} 
-                  className="mt-1 text-[11px] uppercase tracking-widest text-muted-foreground block" 
-                  as="div" 
-                />
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      <dl className="mt-8 divide-y divide-border border-y border-border">
-        {(section.specs ?? []).map((row, spIdx) => (
-          <div
-            key={row.label}
-            className="grid grid-cols-2 gap-4 py-4 transition-all duration-500 ease-brand"
-            style={{ transitionDelay: `${active ? spIdx * 60 : 0}ms`, opacity: active ? 1 : 0.5, transform: active ? "translateY(0)" : "translateY(6px)" }}
-          >
-            <dt className="text-sm text-muted-foreground">
-              <EditableText section={sectionKey} contentKey={`chapter_${index}_spec${spIdx}_label`} as="span" />
-            </dt>
-            <dd className="text-right font-medium tabular-nums">
-              <EditableText section={sectionKey} contentKey={`chapter_${index}_spec${spIdx}_value`} as="span" />
-            </dd>
-          </div>
-        ))}
-      </dl>
+        <dl className="grid grid-cols-1 gap-0 divide-y divide-border/50 pt-4">
+          {(section.specs || []).map((spec: any, spIdx: number) => (
+            <div key={spIdx} className="flex justify-between items-baseline py-3">
+              <dt className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium">
+                <EditableText section={sectionId as any} contentKey={`chapter_${index}_spec${spIdx}_label`} fallback={spec.label} as="span" />
+              </dt>
+              <dd className="text-sm font-semibold text-foreground text-right ml-4">
+                <EditableText section={sectionId as any} contentKey={`chapter_${index}_spec${spIdx}_value`} fallback={spec.value} as="span" />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
   );
 }
+

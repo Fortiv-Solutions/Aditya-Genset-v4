@@ -49,7 +49,7 @@ export function HappyCustomers({ id }: { id?: string }) {
   const clients = content.happyCustomers?.clients || [];
 
   return (
-    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-white pt-16 md:pt-0">
+    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center bg-brand-warm-gray py-20 overflow-hidden">
       <div className="container-x">
         <SectionReveal className="text-center" variant="fadeUp">
           <div className="font-display text-xs uppercase tracking-[0.3em] text-accent">

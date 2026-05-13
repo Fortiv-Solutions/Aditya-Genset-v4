@@ -30,7 +30,7 @@ export function MappingReview({ data }: MappingReviewProps) {
           Structured Mapping Review
           <span className={`text-[10px] px-1.5 py-0.5 rounded-full uppercase tracking-tighter ${
             data.confidence === 'high' ? 'bg-emerald-500/10 text-emerald-400' : 
-            data.confidence === 'medium' ? 'bg-amber-500/10 text-amber-400' : 
+            data.confidence === 'medium' ? 'bg-[#F1AE27]/10 text-[#F1AE27]' : 
             'bg-red-500/10 text-red-400'
           }`}>
             {data.confidence} Confidence
@@ -85,13 +85,13 @@ export function MappingReview({ data }: MappingReviewProps) {
       </div>
 
       {data.missingFields.length > 0 && (
-        <div className="mt-4 p-3 bg-amber-500/5 border border-amber-500/20 rounded-lg">
-          <p className="text-[11px] font-semibold text-amber-400 mb-1 flex items-center gap-1.5">
+        <div className="mt-4 p-3 bg-[#F1AE27]/5 border border-[#F1AE27]/20 rounded-lg">
+          <p className="text-[11px] font-semibold text-[#F1AE27] mb-1 flex items-center gap-1.5">
             <Info size={12} /> Missing or Incomplete Fields
           </p>
           <div className="flex flex-wrap gap-2">
             {data.missingFields.map((field, i) => (
-              <span key={i} className="text-[10px] px-2 py-0.5 bg-amber-500/10 text-amber-500/70 rounded-md border border-amber-500/10">
+              <span key={i} className="text-[10px] px-2 py-0.5 bg-[#F1AE27]/10 text-[#F1AE27]/70 rounded-md border border-[#F1AE27]/10">
                 {field}
               </span>
             ))}

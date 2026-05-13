@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import factoryHero from "@/assets/products/showcase/factory.jpg";
-import dgRealistic from "@/assets/products/showcase/cinematic-view-optimized.jpg";
+import ekl15Image from "@/assets/products/escorts/escort_15kva.jpg";
 import { SEO } from "@/components/site/SEO";
 import { StatStrip } from "@/components/site/StatStrip";
 import { SectionReveal } from "@/components/site/SectionReveal";
@@ -33,10 +33,32 @@ export default function Home() {
   
   const { content } = useCMSState();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.documentElement.classList.add("snap-container");
     return () => document.documentElement.classList.remove("snap-container");
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        document.activeElement?.tagName === "INPUT" ||
+        document.activeElement?.tagName === "TEXTAREA" ||
+        (document.activeElement as HTMLElement)?.isContentEditable
+      ) {
+        return;
+      }
+      
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate("/products");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
 
   return (
     <>
@@ -46,14 +68,7 @@ export default function Home() {
       />
 
       {/* Slide 1 — Hero Section (Landing Screen) */}
-      <section id="hero" className="relative flex min-h-screen snap-center flex-col overflow-hidden bg-white pt-16 md:pt-0">
-        
-        {/* Floating decorative elements - Adjusted for light background */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/20 to-transparent animate-float-slow mix-blend-multiply" />
-          <div className="absolute top-1/2 -right-32 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/10 to-transparent animate-float-slower mix-blend-multiply" />
-          <div className="absolute bottom-20 left-1/4 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-navy/10 to-transparent animate-float-slow" />
-        </div>
+      <section id="hero" className="relative flex min-h-screen snap-center flex-col overflow-hidden bg-brand-warm-gray pt-16 md:pt-0">
 
         {/* Hero grid */}
         <div className="container-x relative z-10 grid flex-1 gap-6 py-8 lg:grid-cols-2 lg:items-center lg:py-12">
@@ -120,26 +135,21 @@ export default function Home() {
                 className="relative mx-auto max-w-md will-change-transform"
                 style={{ y: reduced ? 0 : cardY }}
               >
-                <div className="absolute -inset-6 rounded-full bg-amber-gradient opacity-30 blur-3xl animate-float-slow" />
-                {/* Rotating ring */}
-                <div className="absolute inset-0 -m-6 animate-spin-slow opacity-20">
-                  <div className="h-full w-full rounded-full border-2 border-dashed border-accent" />
-                </div>
                 <motion.div 
-                  className="relative rounded-sm bg-white border border-border p-6 shadow-2xl transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(242,169,0,0.3)] hover:border-accent/30 group/card"
+                  className="relative rounded-sm bg-brand-warm-gray p-6 shadow-2xl transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(241,174,39,0.4)] hover:border-white/50 group/card"
                   whileHover={{ scale: 1.02, y: -4 }}
                   transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
                 >
-                <div className="absolute -top-3 left-6 rounded-sm bg-amber-gradient px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-foreground shadow-lg transition-transform duration-300 group-hover/card:-translate-y-1">
+                <div className="absolute -top-3 left-6 rounded-sm bg-gold-gradient px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-foreground shadow-lg transition-transform duration-300 group-hover/card:-translate-y-1">
                   <EditableText section="showcase" contentKey="featuredBadge" />
                 </div>
                 <div className="mx-auto h-56 w-full overflow-hidden rounded-sm transition-transform duration-700 group-hover/card:scale-[1.02]">
                   <img 
-                    src={dgRealistic} 
-                    alt="62.5 kVA Silent Diesel Generator" 
+                    src={ekl15Image} 
+                    alt="EKL 15 kVA Diesel Generator" 
                     loading="eager"
                     decoding="async"
-                    className="h-full w-full object-contain"
+                    className="h-full w-full object-contain mix-blend-multiply"
                   />
                 </div>
                 <div className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-4 text-foreground">
@@ -148,7 +158,7 @@ export default function Home() {
                   <Stat section="showcase" vKey="featuredStat3Value" lKey="featuredStat3Label" small />
                 </div>
                 <Link
-                  to="/products/silent-62-5"
+                  to="/products"
                   className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-accent px-4 py-2.5 text-xs font-semibold text-foreground transition-all duration-300 ease-brand hover:bg-accent/90 hover:shadow-lg active:scale-[0.98] group pointer-events-auto"
                 >
                   <EditableText section="showcase" contentKey="featuredButton" /> <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -165,29 +175,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Slide 2 */}
-      <CompanyOverview id="overview" />
-
-      {/* Slide 3 */}
-      <MissionVision id="mission" />
-
-      {/* Slide 4 */}
-      <OEMPartners id="oem" />
-      <DealerNetwork id="dealer" />
-
-      {/* Slide 5 */}
-      <TrustGainers id="trust" />
-
-      {/* Slide 6 */}
-      <ManufacturingProcess id="manufacturing" />
-
-      {/* Slide 7 */}
-      <HappyCustomers id="customers" />
-
-      {/* Slide 8 */}
-      <ContactCTA id="contact" />
-      
-      <VerticalNav sections={HOME_SECTIONS} />
     </>
   );
 }

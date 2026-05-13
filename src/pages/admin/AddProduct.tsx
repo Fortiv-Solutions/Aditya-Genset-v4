@@ -232,7 +232,7 @@ export default function AddProduct() {
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-background">
       {/* Unified Thin Header */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-card shrink-0">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border glass-panel shrink-0">
         
         {/* Left Side: Back button & Title */}
         <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -442,7 +442,7 @@ function UploadPhase({
       )}
 
       {mode === "manual" && (
-        <div className="space-y-4 bg-card border border-border rounded-xl p-5">
+        <div className="space-y-4 glass-card rounded-xl p-5">
           <p className="text-sm font-semibold text-foreground">Basic Info</p>
           <div className="grid grid-cols-2 gap-3">
             {[
@@ -467,7 +467,7 @@ function UploadPhase({
       )}
 
       {/* Global Media Assets (Hero & Gallery) */}
-      <div className="space-y-4 bg-card border border-border rounded-xl p-6">
+      <div className="space-y-4 glass-card rounded-xl p-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold text-foreground">Hero & Gallery Assets</p>

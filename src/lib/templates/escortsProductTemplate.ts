@@ -112,8 +112,6 @@ export function generateEscortsProduct(data: EscortsProductData) {
       productName: data.name,
       pageLabel: "Showcase",
       pageSubtitle: `10-chapter walkthrough of the ${data.engineMake}-powered ${data.kva} kVA generator.`,
-      presentModeBtn: "Present Mode",
-      
       sections: [
         // Chapter 01: Overview
         {
@@ -318,7 +316,7 @@ export function generateEscortsProduct(data: EscortsProductData) {
         },
       ],
       
-      // Hotspots for interactive image (not used in current implementation but kept for future)
+      // Hotspots for interactive image
       hotspots: [
         {
           id: "engine",
@@ -377,115 +375,7 @@ export function generateEscortsProduct(data: EscortsProductData) {
         },
       ],
     },
-    
-    // Presentation Mode Data (for GuidedPresentation)
-    presentation: {
-      mainImages: {
-        image1: data.presentationMainImage1,
-        image2: data.presentationMainImage2,
-      },
-      hotspots: [
-        {
-          id: "overview",
-          x: 50, y: 50,
-          title: data.name,
-          description: `The ${data.model} is an ${data.engineMake}-powered ${data.kva} kVA silent diesel generator set, designed to comply with ${data.isoCompliance}.`,
-          subImage: data.presentationSubImages.overview,
-          zoom: 1,
-          offsetX: 0,
-          offsetY: 0,
-        },
-        {
-          id: "engine",
-          x: 42, y: 48,
-          title: "Engine",
-          description: `${data.cylinders}-cylinder diesel engine. Built for continuous duty and tight load response.`,
-          subImage: data.presentationSubImages.engine,
-          zoom: 1.8,
-          offsetX: 8,
-          offsetY: 2,
-        },
-        {
-          id: "fuel",
-          x: 35, y: 55,
-          title: "Fuel, Lube & Cooling",
-          description: "Optimized fuel system with efficient cooling for extended runtime.",
-          subImage: data.presentationSubImages.fuel,
-          zoom: 1.6,
-          offsetX: 15,
-          offsetY: -5,
-        },
-        {
-          id: "alternator",
-          x: 65, y: 45,
-          title: "Alternator",
-          description: `${data.alternatorMake} brushless alternator. Clean, stable 3-phase power.`,
-          subImage: data.presentationSubImages.alternator,
-          zoom: 1.5,
-          offsetX: -15,
-          offsetY: 5,
-        },
-        {
-          id: "electrical",
-          x: 78, y: 38,
-          title: "Electrical Performance",
-          description: "Precision power delivery with advanced voltage regulation.",
-          subImage: data.presentationSubImages.electrical,
-          zoom: 2.0,
-          offsetX: -25,
-          offsetY: 10,
-        },
-        {
-          id: "enclosure",
-          x: 50, y: 75,
-          title: "Enclosure & Sound",
-          description: `${data.cpcb} compliant acoustic enclosure. ${data.noiseLevel} sound level.`,
-          subImage: data.presentationSubImages.enclosure,
-          zoom: 1.2,
-          offsetX: 0,
-          offsetY: -10,
-        },
-        {
-          id: "control",
-          x: 70, y: 30,
-          title: "Control Panel",
-          description: "DEIF digital controller with real-time monitoring.",
-          subImage: data.presentationSubImages.control,
-          zoom: 1.8,
-          offsetX: -20,
-          offsetY: 15,
-        },
-        {
-          id: "protection",
-          x: 60, y: 60,
-          title: "Protection & Approvals",
-          description: "Comprehensive safety systems and international certifications.",
-          subImage: data.presentationSubImages.protection,
-          zoom: 1.4,
-          offsetX: -10,
-          offsetY: 0,
-        },
-        {
-          id: "supply",
-          x: 40, y: 65,
-          title: "Standard Supply",
-          description: "Complete package with all essential components included.",
-          subImage: data.presentationSubImages.supply,
-          zoom: 1.3,
-          offsetX: 10,
-          offsetY: -5,
-        },
-        {
-          id: "dimensions",
-          x: 50, y: 50,
-          title: "Dimensions & Weight",
-          description: `Compact footprint: ${data.length} × ${data.width} × ${data.height}`,
-          subImage: data.presentationSubImages.dimensions,
-          zoom: 1,
-          offsetX: 0,
-          offsetY: 0,
-        },
-      ],
-    },
   }
 }
+
+

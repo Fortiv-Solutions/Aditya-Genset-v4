@@ -98,7 +98,7 @@ function MetricCard({
   icon: React.ElementType;
 }) {
   return (
-    <div className="admin-card bg-card border border-border p-5">
+    <div className="admin-card glass-card p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{label}</p>
@@ -304,7 +304,7 @@ export default function AdminReports() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-            <div className="admin-card bg-card border border-border p-5">
+            <div className="admin-card glass-card p-5">
               <h3 className="text-base font-semibold text-foreground">Revenue Summary</h3>
               <p className="mt-1 text-sm text-muted-foreground">Accepted revenue and open quote value</p>
               <div className="mt-5 grid grid-cols-2 gap-3">
@@ -319,7 +319,7 @@ export default function AdminReports() {
               </div>
             </div>
 
-            <div className="admin-card bg-card border border-border p-5">
+            <div className="admin-card glass-card p-5">
               <h3 className="text-base font-semibold text-foreground">Catalogue Health</h3>
               <p className="mt-1 text-sm text-muted-foreground">Publication state of current inventory</p>
               <div className="mt-5 space-y-3">
@@ -348,7 +348,7 @@ export default function AdminReports() {
       )}
 
       {activeReport === "products" && (
-        <div className="admin-card overflow-hidden border border-border bg-card">
+        <div className="admin-card overflow-hidden glass-card-strong">
           <div className="border-b border-border px-5 py-4">
             <h3 className="text-base font-semibold text-foreground">Product Performance</h3>
             <p className="mt-1 text-sm text-muted-foreground">Ranked by quote usage and presentation sessions</p>

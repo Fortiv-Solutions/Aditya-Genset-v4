@@ -41,7 +41,7 @@ export function DealerNetwork({ id }: { id?: string }) {
   };
 
   return (
-    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center overflow-hidden bg-white pt-16 md:pt-0">
+    <section id={id} className="relative flex min-h-screen snap-center flex-col justify-center bg-brand-warm-gray py-20 overflow-hidden">
       <div className="container-x grid gap-16 md:grid-cols-2 md:items-center">
         {/* Left — text + cities */}
         <SectionReveal variant="slideLeft">
@@ -59,7 +59,7 @@ export function DealerNetwork({ id }: { id?: string }) {
             {cities.map((city: string, i: number) => (
               <div
                 key={i}
-                className="group relative flex items-center gap-2 rounded-sm border border-border bg-secondary/50 px-3 py-2 text-sm transition-all duration-300 ease-brand hover:-translate-y-0.5 hover:border-accent hover:shadow-md"
+                className="group relative flex items-center gap-2 rounded-sm border border-white/40 bg-white px-3 py-2 text-sm transition-all duration-300 ease-brand hover:-translate-y-0.5 hover:border-accent hover:shadow-lg"
               >
                 <MapPin size={14} className="text-accent shrink-0" />
                 {isEditMode ? (
@@ -138,11 +138,16 @@ export function DealerNetwork({ id }: { id?: string }) {
         </SectionReveal>
 
         {/* Right — map image */}
-        <SectionReveal variant="slideRight" delay={100}>
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-sm bg-amber-gradient opacity-30 blur-xl" />
-            <div className="relative overflow-hidden rounded-sm border border-border bg-white p-4 shadow-xl">
-              <img src={dealerMap} alt="Aditya dealer network across India" loading="lazy" className="w-full" />
+        <SectionReveal variant="slideRight" delay={100} className="flex items-center justify-center">
+          <div className="relative w-full max-w-lg">
+            <div className="absolute -inset-4 rounded-sm bg-accent/20 opacity-30 blur-2xl" />
+            <div className="relative overflow-hidden rounded-sm border border-white/40 bg-white p-4 shadow-2xl">
+              <img 
+                src={dealerMap} 
+                alt="Aditya dealer network across India" 
+                loading="lazy" 
+                className="w-full h-auto object-contain" 
+              />
             </div>
           </div>
         </SectionReveal>

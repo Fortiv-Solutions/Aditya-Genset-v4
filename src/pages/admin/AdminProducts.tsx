@@ -25,7 +25,7 @@ const STATUS_STYLES: Record<AdminProduct["status"], string> = {
 
 const STOCK_STYLES: Record<AdminProduct["stock"], string> = {
   in_stock: "text-emerald-700 bg-emerald-50 border-emerald-200",
-  on_order: "text-amber-700 bg-amber-50 border-amber-200",
+  on_order: "text-[#F1AE27] bg-[#F1AE27]/10 border-[#F1AE27]/20",
   discontinued: "text-red-700 bg-red-50 border-red-200",
 };
 
@@ -47,7 +47,7 @@ function StatCard({
   icon: React.ElementType;
 }) {
   return (
-    <div className="admin-card bg-card border border-border p-4">
+    <div className="admin-card glass-card p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{label}</p>
@@ -281,7 +281,7 @@ export default function AdminProducts() {
         <StatCard label="Product Types" value={new Set(products.map((product) => product.type)).size} detail="Live type coverage" icon={Package} />
       </div>
 
-      <div className="admin-card bg-card border border-border p-4">
+      <div className="admin-card glass-card p-4">
         <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -340,7 +340,7 @@ export default function AdminProducts() {
         )}
       </div>
 
-      <div className="admin-card overflow-hidden border border-border bg-card">
+      <div className="admin-card overflow-hidden glass-card-strong">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1080px] text-sm">
             <thead>
@@ -350,7 +350,7 @@ export default function AdminProducts() {
                     type="checkbox"
                     checked={filtered.length > 0 && selected.size === filtered.length}
                     onChange={toggleAll}
-                    className="rounded border-border accent-amber-500"
+                    className="rounded border-border accent-[#F1AE27]"
                   />
                 </th>
                 <th className="px-5 py-3 text-left">Product</th>
@@ -385,7 +385,7 @@ export default function AdminProducts() {
                       type="checkbox"
                       checked={selected.has(product.id)}
                       onChange={() => toggleSelect(product.id)}
-                      className="rounded border-border accent-amber-500"
+                      className="rounded border-border accent-[#F1AE27]"
                     />
                   </td>
                   <td className="px-5 py-4">
