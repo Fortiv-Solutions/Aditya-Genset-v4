@@ -21,7 +21,7 @@ export function ProductCard({ product }: Props) {
         <SmoothImage
           src={product.thumbnail}
           alt={product.name}
-          loading="lazy"
+          loading="eager"
           wrapperClassName="h-full w-full"
           imageClassName={cn(
             "h-full w-full object-cover transition-transform duration-1000 ease-brand",
