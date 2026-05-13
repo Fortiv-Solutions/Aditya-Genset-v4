@@ -52,8 +52,8 @@ export default function ProductDetail() {
               number: String(v2Data.sections.length + 1).padStart(2, "0"),
               title: "Product Video",
               tagline: "Escort DG Set — Multiple views and 360° product showcase.",
-              image: escortVideoThumb,
-              videoUrl: escortVideo,
+              image: "/assets/products/showcase/main-view-optimized.jpg",
+              videoUrl: "/assets/products/showcase/product-video.mp4",
               alt: `${v2Data.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -63,8 +63,8 @@ export default function ProductDetail() {
             });
           } else {
             const videoSec = v2Data.sections.find(s => s.id === "video");
-            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = escortVideo;
-            if (videoSec && !videoSec.image) videoSec.image = escortVideoThumb;
+            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
+            if (videoSec && !videoSec.image) videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
           }
           if (!v2Data.hotspots.find(h => h.id === "video")) {
             v2Data.hotspots.push({
@@ -145,7 +145,7 @@ export default function ProductDetail() {
               number: "10",
               title: "Electrical Performance",
               tagline: "Comprehensive electrical specifications and reactance data.",
-              image: finalProduct.engineBrand === "Escorts" ? escortElectrical : "/assets/products/parts/enclosure.jpg",
+              image: finalProduct.engineBrand === "Escorts" ? "/assets/products/escorts/escort_40kva_4.jpg" : "/assets/products/parts/enclosure.jpg",
               alt: "Electrical performance",
               specs: [
                 { label: "Short Circuit Ratio", value: finalProduct.engineBrand === "Escorts" ? (Number(finalProduct.kva) === 15 ? "0.515" : "0.410") : "0.450" },
