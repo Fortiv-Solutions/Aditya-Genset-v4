@@ -145,7 +145,7 @@ export function DealerNetwork({ id }: { id?: string }) {
               <img 
                 src={dealerMap} 
                 alt="Aditya dealer network across India" 
-                loading="lazy" 
+                loading="eager" 
                 className="w-full h-auto object-contain" 
               />
             </div>

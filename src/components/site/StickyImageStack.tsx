@@ -99,7 +99,7 @@ export function StickyImageStack({ sections, active }: Props) {
               <img
                 src={s.image}
                 alt={s.alt}
-                loading={i === active ? "eager" : "lazy"}
+                loading="eager"
                 decoding="async"
                 className="h-full w-full object-contain"
               />

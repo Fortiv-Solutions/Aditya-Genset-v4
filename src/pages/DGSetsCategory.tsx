@@ -243,7 +243,7 @@ export default function DGSetsCategory() {
                       <img
                         src={set.image}
                         alt={set.model}
-                        loading={index < 4 ? "eager" : "lazy"}
+                        loading="eager"
                         decoding="async"
                         className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
                       />

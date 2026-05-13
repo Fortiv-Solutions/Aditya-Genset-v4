@@ -111,7 +111,7 @@ export default function Products() {
                     <img
                       src={category.image}
                       alt={category.title}
-                      loading={index === 0 ? "eager" : "lazy"}
+                      loading="eager"
                       decoding="async"
                       className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-110"
                     />
