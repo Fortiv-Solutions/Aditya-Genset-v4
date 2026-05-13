@@ -314,12 +314,12 @@ export const SHOWCASE: ShowcaseProduct = {
 };
 
 // ── Shared Assets for Escort Products ──────────────────────────────────────────
-import ekl15Engine    from "@/assets/products/parts/engine-real.jpg";
-import ekl15Control   from "@/assets/products/parts/enclosure.jpg";
+import ekl15Engine    from "@/assets/products/escorts/escort_40kva_2.jpg";
+import ekl15Control   from "@/assets/products/escorts/escort_30kva_1.jpg";
 import ekl15Overview  from "@/assets/products/escorts/escort_15kva.jpg";
-import ekl15Alternator from "@/assets/products/parts/engine-real.jpg";
+import ekl15Alternator from "@/assets/products/escorts/escort_40kva_3.jpg";
 import ekl15Dimensions from "@/assets/products/escorts/escort_40kva_main.jpg";
-import ekl15Enclosure  from "@/assets/products/parts/enclosure.jpg";
+import ekl15Enclosure  from "@/assets/products/escorts/escort_58_5kva_5.jpg";
 import ekl15Supply     from "@/assets/products/escorts/escort_20kva_1.jpg";
 
 import escort15KVA from "@/assets/products/escorts/escort_15kva.jpg";
@@ -330,8 +330,8 @@ import escort30KVA from "@/assets/products/escorts/escort_30kva.jpg";
 import escort40KVA2 from "@/assets/products/escorts/escort_40kva_2.jpg";
 import escort40KVA from "@/assets/products/escorts/escort_40kva_main.jpg";
 import escortVideoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
-import ekl15Electrical from "@/assets/products/parts/enclosure.jpg";
-import ekl15Protection from "@/assets/products/parts/enclosure.jpg";
+import ekl15Electrical from "@/assets/products/escorts/escort_40kva_4.jpg";
+import ekl15Protection from "@/assets/products/escorts/escort_58_5kva_6.jpg";
 
 export const PRODUCTS: ProductSummary[] = [
   {

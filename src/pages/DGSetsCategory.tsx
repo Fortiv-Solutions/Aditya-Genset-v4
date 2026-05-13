@@ -5,6 +5,13 @@ import { fetchPublishedProducts } from "@/lib/api/products";
 import { SectionReveal } from "@/components/site/SectionReveal";
 import { ArrowLeft, ArrowRight, Zap, Search, Loader2 } from "lucide-react";
 import gensetFallback from "@/assets/products/showcase/main-view-optimized.jpg";
+import escort10 from "@/assets/products/escorts/escort_15kva.jpg";
+import escort15 from "@/assets/products/escorts/escort_15kva_2.jpg";
+import escort20 from "@/assets/products/escorts/escort_20kva_2.jpg";
+import escort30 from "@/assets/products/escorts/escort_30kva.jpg";
+import escort35 from "@/assets/products/escorts/escort_40kva_main.jpg";
+import escort40 from "@/assets/products/escorts/escort_40kva.jpg";
+import escort58 from "@/assets/products/escorts/escort_58_5kva_1.jpg";
 import { EditableText } from "@/components/cms/EditableText";
 import { useCMSState } from "@/components/cms/CMSEditorProvider";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -66,7 +73,18 @@ export default function DGSetsCategory() {
             application: specs.find(s => s.label.toLowerCase().includes('application'))?.value || 'Prime',
             fuel: specs.find(s => s.label.toLowerCase().includes('fuel consumption'))?.value || 'Variable',
             noise: specs.find(s => s.label.toLowerCase().includes('noise'))?.value || '70 dB(A)',
-            image: primaryMedia?.public_url || gensetFallback,
+            image: primaryMedia?.public_url || (() => {
+              if (engineBrand.includes("escort")) {
+                if (p.kva <= 10) return escort10;
+                if (p.kva <= 15) return escort15;
+                if (p.kva <= 20) return escort20;
+                if (p.kva <= 30) return escort30;
+                if (p.kva <= 35) return escort35;
+                if (p.kva <= 45) return escort40;
+                return escort58;
+              }
+              return gensetFallback;
+            })(),
             compliance: specs.find(s => s.label.toLowerCase().includes('compliance'))?.value || 'CPCB IV+',
             isHidden: p.status !== 'published'
           };
