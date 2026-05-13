@@ -279,7 +279,7 @@ export function ScrollStory({
                 key={s.id}
                 ref={(el) => (refs.current[i] = el)}
                 data-index={i}
-                className="flex min-w-0 flex-col justify-start"
+                className="flex min-w-0 flex-col justify-start overflow-hidden"
                 style={{
                   height: colHeight,
                   paddingTop: 100,
@@ -287,7 +287,30 @@ export function ScrollStory({
                 }}
               >
                 {/* Section Content */}
-                {isEscorts && mergedData ? (
+                {s.id === "video" ? (
+                  /* Video slide: centered label + nothing else in right panel */
+                  <div className="flex flex-col items-start justify-start gap-3">
+                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-accent">
+                      {s.number} / {s.title}
+                    </p>
+                    <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground leading-tight">
+                      {product.name.replace("Silent DG Set powered by Escorts Kubota engine. CPCB IV+ compliant extraction from datasheet.", "Silent DG Set")}
+                    </h2>
+                    {s.tagline && (
+                      <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
+                        {s.tagline}
+                      </p>
+                    )}
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {(s.specs || []).map((sp) => (
+                        <div key={sp.label} className="flex flex-col gap-0.5 px-3 py-2 rounded-lg bg-secondary/60 border border-border">
+                          <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{sp.label}</span>
+                          <span className="text-sm font-semibold text-foreground">{sp.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : isEscorts && mergedData ? (
                   <ChapterInteractive
                     chapterId={s.id}
                     data={mergedData}
