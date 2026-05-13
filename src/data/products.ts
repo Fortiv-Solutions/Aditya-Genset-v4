@@ -884,7 +884,7 @@ export const EKL20_SHOWCASE: ShowcaseProduct = {
       number: "02",
       title: "Engine",
       tagline: "Escorts G20-IV — 3-cylinder performance.",
-      image: escort20KVA,
+      image: escort20KVA1,
       alt: "Escorts 3-cylinder engine",
       specs: [
         { label: "Make", value: "Escorts" },
