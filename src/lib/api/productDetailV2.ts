@@ -5,17 +5,6 @@
  */
 import { supabase } from "../supabase";
 
-// ── Fallback Assets ──────────────────────────────────────────────────────────
-import escort15 from "@/assets/products/escorts/escort_15kva.jpg";
-import engineImg from "@/assets/products/escorts/escort_40kva_2.jpg";
-import alternatorImg from "@/assets/products/escorts/escort_40kva_3.jpg";
-import controlImg from "@/assets/products/escorts/escort_30kva_1.jpg";
-import enclosureImg from "@/assets/products/escorts/escort_58_5kva_5.jpg";
-import protectionImg from "@/assets/products/escorts/escort_58_5kva_6.jpg";
-import electricalImg from "@/assets/products/escorts/escort_40kva_4.jpg";
-import supplyImg from "@/assets/products/escorts/escort_20kva_1.jpg";
-import dimensionsImg from "@/assets/products/escorts/escort_20kva.jpg";
-
 // ── Types matching the frontend ShowcaseProduct interface ────────────────────
 export interface V2SpecRow {
   label: string;
@@ -162,16 +151,16 @@ export async function fetchProductDetailV2(slug: string): Promise<V2ShowcaseProd
     if (!isPlaceholder) return current;
 
     const lowerKey = key.toLowerCase();
-    if (lowerKey.includes("engine")) return engineImg;
-    if (lowerKey.includes("alternator")) return alternatorImg;
-    if (lowerKey.includes("control")) return controlImg;
-    if (lowerKey.includes("enclosure") || lowerKey.includes("canopy")) return enclosureImg;
-    if (lowerKey.includes("protection")) return protectionImg;
-    if (lowerKey.includes("electrical")) return electricalImg;
-    if (lowerKey.includes("supply")) return supplyImg;
-    if (lowerKey.includes("dimension")) return dimensionsImg;
-    if (lowerKey.includes("fuel")) return supplyImg;
-    return escort15;
+    if (lowerKey.includes("engine")) return "/assets/products/escorts/escort_40kva_2.jpg";
+    if (lowerKey.includes("alternator")) return "/assets/products/escorts/escort_40kva_3.jpg";
+    if (lowerKey.includes("control")) return "/assets/products/escorts/escort_30kva_1.jpg";
+    if (lowerKey.includes("enclosure") || lowerKey.includes("canopy")) return "/assets/products/escorts/escort_58_5kva_5.jpg";
+    if (lowerKey.includes("protection")) return "/assets/products/escorts/escort_58_5kva_6.jpg";
+    if (lowerKey.includes("electrical")) return "/assets/products/escorts/escort_40kva_4.jpg";
+    if (lowerKey.includes("supply")) return "/assets/products/escorts/escort_20kva_1.jpg";
+    if (lowerKey.includes("dimension")) return "/assets/products/escorts/escort_20kva.jpg";
+    if (lowerKey.includes("fuel")) return "/assets/products/escorts/escort_20kva_1.jpg";
+    return "/assets/products/escorts/escort_15kva.jpg";
   };
 
   // 3. Transform sections → ShowcaseSection[]

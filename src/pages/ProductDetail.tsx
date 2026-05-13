@@ -12,22 +12,12 @@ import type { V2ShowcaseProduct } from "@/lib/api/productDetailV2";
 import { ShowcaseProduct, getProductBySlug } from "@/data/products";
 import { BarChart2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import videoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
+const videoThumb = "/assets/products/showcase/main-view-optimized.jpg";
 
 import showcaseVideo from "@/assets/products/showcase/product-video.mp4";
 
 // Import core showcase assets to ensure they are bundled correctly
-import escortVideo from "@/assets/products/showcase/product-video.mp4";
-import escortVideoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
-import escortElectrical from "@/assets/products/escorts/escort_40kva_4.jpg";
-import escortEngine from "@/assets/products/escorts/escort_40kva_2.jpg";
-import escortAlternator from "@/assets/products/escorts/escort_40kva_3.jpg";
-import escortControl from "@/assets/products/escorts/escort_30kva_1.jpg";
-import escortEnclosure from "@/assets/products/escorts/escort_58_5kva_5.jpg";
-import escortSupply from "@/assets/products/escorts/escort_20kva_1.jpg";
-import escortProtection from "@/assets/products/escorts/escort_58_5kva_6.jpg";
-import escortDimensions from "@/assets/products/escorts/escort_20kva.jpg";
-import escort15 from "@/assets/products/escorts/escort_15kva_2.jpg";
+
 
 // Height of the absolute header overlay in px — used to offset first chapter
 export const SHOWCASE_HEADER_H = 230;
@@ -115,16 +105,16 @@ export default function ProductDetail() {
             if (!isPlaceholder) return current;
 
             const k = key.toLowerCase();
-            if (k.includes("engine")) return escortEngine;
-            if (k.includes("alternator")) return escortAlternator;
-            if (k.includes("control")) return escortControl;
-            if (k.includes("enclosure") || k.includes("canopy")) return escortEnclosure;
-            if (k.includes("protection")) return escortProtection;
-            if (k.includes("electrical")) return escortElectrical;
-            if (k.includes("supply")) return escortSupply;
-            if (k.includes("dimension")) return escortDimensions;
-            if (k.includes("fuel")) return escortSupply;
-            return escort15;
+            if (k.includes("engine")) return "/assets/products/escorts/escort_40kva_2.jpg";
+            if (k.includes("alternator")) return "/assets/products/escorts/escort_40kva_3.jpg";
+            if (k.includes("control")) return "/assets/products/escorts/escort_30kva_1.jpg";
+            if (k.includes("enclosure") || k.includes("canopy")) return "/assets/products/escorts/escort_58_5kva_5.jpg";
+            if (k.includes("protection")) return "/assets/products/escorts/escort_58_5kva_6.jpg";
+            if (k.includes("electrical")) return "/assets/products/escorts/escort_40kva_4.jpg";
+            if (k.includes("supply")) return "/assets/products/escorts/escort_20kva_1.jpg";
+            if (k.includes("dimension")) return "/assets/products/escorts/escort_20kva.jpg";
+            if (k.includes("fuel")) return "/assets/products/escorts/escort_20kva_1.jpg";
+            return "/assets/products/escorts/escort_15kva_2.jpg";
           };
 
           let finalProduct: ShowcaseProduct = {
@@ -197,10 +187,10 @@ export default function ProductDetail() {
             // Force videoUrl for the existing video section if missing or incorrect
             const videoSec = finalProduct.sections.find(s => s.id === "video");
             if (videoSec && !videoSec.videoUrl) {
-              videoSec.videoUrl = escortVideo;
+              videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
             }
             if (videoSec && !videoSec.image) {
-              videoSec.image = escortVideoThumb;
+              videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
             }
           }
           if (!finalProduct.hotspots.find(h => h.id === "video")) {
@@ -233,7 +223,7 @@ export default function ProductDetail() {
               number: "10",
               title: "Electrical Performance",
               tagline: "Comprehensive electrical specifications and reactance data.",
-              image: finalProduct.engineBrand === "Escorts" ? escortElectrical : "/assets/products/parts/enclosure.jpg",
+              image: finalProduct.engineBrand === "Escorts" ? "/assets/products/escorts/escort_40kva_4.jpg" : "/assets/products/parts/enclosure.jpg",
               alt: "Electrical performance",
               specs: [
                 { label: "Short Circuit Ratio", value: finalProduct.engineBrand === "Escorts" ? (Number(finalProduct.kva) === 15 ? "0.515" : "0.410") : "0.450" },
@@ -269,10 +259,10 @@ export default function ProductDetail() {
             // Force videoUrl for the existing video section if missing or incorrect
             const videoSec = finalProduct.sections.find(s => s.id === "video");
             if (videoSec && !videoSec.videoUrl) {
-              videoSec.videoUrl = escortVideo;
+              videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
             }
             if (videoSec && !videoSec.image) {
-              videoSec.image = escortVideoThumb;
+              videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
             }
           }
           if (!finalProduct.hotspots.find(h => h.id === "video")) {

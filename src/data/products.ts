@@ -314,24 +314,24 @@ export const SHOWCASE: ShowcaseProduct = {
 };
 
 // ── Shared Assets for Escort Products ──────────────────────────────────────────
-import ekl15Engine    from "@/assets/products/escorts/escort_40kva_2.jpg";
-import ekl15Control   from "@/assets/products/escorts/escort_30kva_1.jpg";
-import ekl15Overview  from "@/assets/products/escorts/escort_15kva.jpg";
-import ekl15Alternator from "@/assets/products/escorts/escort_40kva_3.jpg";
-import ekl15Dimensions from "@/assets/products/escorts/escort_40kva_main.jpg";
-import ekl15Enclosure  from "@/assets/products/escorts/escort_58_5kva_5.jpg";
-import ekl15Supply     from "@/assets/products/escorts/escort_20kva_1.jpg";
+const ekl15Engine = "/assets/products/escorts/escort_40kva_2.jpg";
+const ekl15Control = "/assets/products/escorts/escort_30kva_1.jpg";
+const ekl15Overview = "/assets/products/escorts/escort_15kva.jpg";
+const ekl15Alternator = "/assets/products/escorts/escort_40kva_3.jpg";
+const ekl15Dimensions = "/assets/products/escorts/escort_40kva_main.jpg";
+const ekl15Enclosure = "/assets/products/escorts/escort_58_5kva_5.jpg";
+const ekl15Supply = "/assets/products/escorts/escort_20kva_1.jpg";
 
-import escort15KVA from "@/assets/products/escorts/escort_15kva.jpg";
-import escort15KVA2 from "@/assets/products/escorts/escort_15kva_2.jpg";
-import escort20KVA1 from "@/assets/products/escorts/escort_20kva_1.jpg";
-import escort20KVA2 from "@/assets/products/escorts/escort_20kva_2.jpg";
-import escort30KVA from "@/assets/products/escorts/escort_30kva.jpg";
-import escort40KVA2 from "@/assets/products/escorts/escort_40kva_2.jpg";
-import escort40KVA from "@/assets/products/escorts/escort_40kva_main.jpg";
-import escortVideoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
-import ekl15Electrical from "@/assets/products/escorts/escort_40kva_4.jpg";
-import ekl15Protection from "@/assets/products/escorts/escort_58_5kva_6.jpg";
+const escort15KVA = "/assets/products/escorts/escort_15kva.jpg";
+const escort15KVA2 = "/assets/products/escorts/escort_15kva_2.jpg";
+const escort20KVA1 = "/assets/products/escorts/escort_20kva_1.jpg";
+const escort20KVA2 = "/assets/products/escorts/escort_20kva_2.jpg";
+const escort30KVA = "/assets/products/escorts/escort_30kva.jpg";
+const escort40KVA2 = "/assets/products/escorts/escort_40kva_2.jpg";
+const escort40KVA = "/assets/products/escorts/escort_40kva_main.jpg";
+const escortVideoThumb = "/assets/products/showcase/main-view-optimized.jpg";
+const ekl15Electrical = "/assets/products/escorts/escort_40kva_4.jpg";
+const ekl15Protection = "/assets/products/escorts/escort_58_5kva_6.jpg";
 
 export const PRODUCTS: ProductSummary[] = [
   {
