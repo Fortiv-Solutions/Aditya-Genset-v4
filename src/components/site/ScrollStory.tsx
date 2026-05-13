@@ -308,7 +308,7 @@ export function ScrollStory({
           <article key={s.id} className="py-12 border-b border-border last:border-0">
             {product.engineBrand !== "Escorts" && (
               <div className="mb-6 aspect-square overflow-hidden rounded-sm bg-muted">
-                <SmoothImage src={s.image} alt={s.alt} loading="lazy" wrapperClassName="h-full w-full" imageClassName="h-full w-full object-cover" />
+                <SmoothImage src={s.image} alt={s.alt} loading="eager" wrapperClassName="h-full w-full" imageClassName="h-full w-full object-cover" />
               </div>
             )}
             {product.engineBrand === "Escorts" ? (

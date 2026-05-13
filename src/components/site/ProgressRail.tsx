@@ -35,7 +35,7 @@ export function ProgressRail({ count, active, labels, images, videoUrls, onJump 
                 <img
                   src={images[i]}
                   alt={labels?.[i] ?? `Section ${i + 1}`}
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   className={cn(
                     "h-full w-full object-top transition-all duration-500",

@@ -33,7 +33,7 @@ function ClientLogo({ name, logo }: { name: string; logo: string }) {
       <img
         src={logo}
         alt={name}
-        loading="lazy"
+        loading="eager"
         title={name}
         onError={() => setHasError(true)}
         className={`max-h-12 w-auto max-w-full object-contain transition-all duration-500 ease-brand hover:opacity-100 hover:grayscale-0 hover:scale-[1.15] ${
