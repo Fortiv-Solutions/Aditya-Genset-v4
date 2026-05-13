@@ -27,7 +27,7 @@ function VideoSlide({ section, isActive }: { section: ShowcaseSection; isActive:
   const handlePlay = () => {
     setIsPlaying(true);
     if (videoRef.current) {
-      videoRef.current.play();
+      videoRef.current.play().catch(e => console.warn("Video playback failed:", e));
     }
   };
 
@@ -44,13 +44,15 @@ function VideoSlide({ section, isActive }: { section: ShowcaseSection; isActive:
       {section.videoUrl && (
         <video
           ref={videoRef}
-          src={section.videoUrl}
           preload="metadata"
           playsInline
+          crossOrigin="anonymous"
           className="h-full w-full object-cover"
           controls={isPlaying}
           onEnded={() => setIsPlaying(false)}
-        />
+        >
+          <source src={section.videoUrl} type="video/mp4" />
+        </video>
       )}
 
       {/* Play overlay — shown when not playing */}

@@ -53,7 +53,9 @@ export function ScrollStory({
   const handlePlayVideo = () => {
     if (videoRef.current) {
       videoRef.current.muted = false;
-      videoRef.current.play();
+      videoRef.current.play().catch(e => {
+        console.warn("Video playback failed:", e);
+      });
       setIsVideoPlaying(true);
     }
   };
@@ -217,12 +219,14 @@ export function ScrollStory({
                     <div className="relative w-full h-full group flex items-center justify-center">
                       <video
                         ref={videoRef}
-                        src={product.sections[active].videoUrl}
                         controls={isVideoPlaying}
                         playsInline
+                        crossOrigin="anonymous"
                         className="w-full h-full object-contain mix-blend-multiply"
                         onEnded={() => setIsVideoPlaying(false)}
-                      />
+                      >
+                        <source src={product.sections[active].videoUrl} type="video/mp4" />
+                      </video>
                       {!isVideoPlaying && (
                         <button
                           onClick={handlePlayVideo}
@@ -314,11 +318,13 @@ export function ScrollStory({
             {s.videoUrl && (
               <div className="mb-6 aspect-video overflow-hidden rounded-sm bg-black relative">
                 <video
-                  src={s.videoUrl}
                   controls
                   playsInline
+                  crossOrigin="anonymous"
                   className="h-full w-full object-contain"
-                />
+                >
+                  <source src={s.videoUrl} type="video/mp4" />
+                </video>
               </div>
             )}
             {product.engineBrand === "Escorts" ? (
