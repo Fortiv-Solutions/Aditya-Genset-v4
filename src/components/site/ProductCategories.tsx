@@ -51,7 +51,7 @@ function ImageSlider({ images }: { images: string[] }) {
           key={currentIndex}
           src={images[currentIndex]}
           alt="Product"
-          loading="lazy"
+          loading="eager"
           decoding="async"
           className="absolute inset-0 w-full h-full object-contain drop-shadow-2xl"
           initial={{ opacity: 0, scale: 0.95 }}
