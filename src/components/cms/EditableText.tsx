@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useCMSState } from "@/components/cms/CMSEditorProvider";
-import type { CMSSection } from "@/lib/sanity";
+import { defaultContent, type CMSSection } from "@/lib/sanity";
 
 interface EditableTextProps {
   contentKey: string;
@@ -18,8 +18,20 @@ export function EditableText({ contentKey, section, className = "", as: Componen
 
   // Always derive the raw string value from the single source of truth
   const rawValue = content[section]?.[contentKey as keyof typeof content[typeof section]] as string | undefined;
-  // `override` wins over everything; fallback only used when rawValue is absent
-  const value = override !== undefined ? override : (rawValue !== undefined ? rawValue : (fallback || ""));
+  const defaultValue = defaultContent[section]?.[contentKey as keyof typeof defaultContent[typeof section]] as string | undefined;
+  
+  const isCustomEdit = rawValue !== undefined && rawValue !== defaultValue;
+
+  let value = "";
+  if (override !== undefined) {
+    value = override;
+  } else if (isCustomEdit) {
+    value = rawValue;
+  } else if (fallback !== undefined && fallback !== "") {
+    value = fallback;
+  } else {
+    value = rawValue || "";
+  }
   const ref = useRef<HTMLElement>(null);
 
   // The Empty-DOM Effect Pattern:

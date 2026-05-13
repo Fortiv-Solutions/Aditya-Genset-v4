@@ -271,7 +271,24 @@ export function ScrollStory({
           {(product.sections || []).map((s, i) => {
             const isEscorts = product.engineBrand === "Escorts";
             const chapterData = chapterDataMap ? chapterDataMap[s.id] : undefined;
-            const mergedData = isEscorts ? { ...(chapterData || {}), ...s } : null;
+            // Always override kva with the actual product value to prevent stale DB data showing wrong kVA
+            const baseHighlights = chapterData?.highlights || (s as any).highlights;
+            const correctedHighlights = (() => {
+              if (!baseHighlights) return undefined;
+              return baseHighlights.map((h: any, idx: number) => {
+                // First highlight is typically the kVA rating — always correct it
+                if (idx === 0 && (h.suffix === "kVA" || h.label?.toLowerCase().includes("kva"))) {
+                  return { ...h, value: String(product.kva ?? h.value) };
+                }
+                return h;
+              });
+            })();
+            const mergedData = isEscorts ? {
+              ...(chapterData || {}),
+              ...s,
+              kva: String(product.kva ?? ""),
+              ...(correctedHighlights ? { highlights: correctedHighlights } : {}),
+            } : null;
             const articlePaddingTop = i === 0 ? Math.max(firstChapterOffset, 24) : 24;
 
             return (
@@ -308,7 +325,23 @@ export function ScrollStory({
 
       {/* MOBILE STACKED LAYOUT */}
       <div className="container-x lg:hidden">
-        {product.sections.map((s, i) => (
+        {product.sections.map((s, i) => {
+            const mobileCorrectedHighlights = (() => {
+              const hl = (s as any).highlights;
+              if (!hl) return undefined;
+              return hl.map((h: any, idx: number) => {
+                if (idx === 0 && (h.suffix === "kVA" || h.label?.toLowerCase().includes("kva"))) {
+                  return { ...h, value: String(product.kva ?? h.value) };
+                }
+                return h;
+              });
+            })();
+            const mobileData: any = {
+              ...s,
+              kva: String(product.kva ?? ""),
+              ...(mobileCorrectedHighlights ? { highlights: mobileCorrectedHighlights } : {}),
+            };
+            return (
           <article key={s.id} className="py-12 border-b border-border last:border-0">
             {product.engineBrand !== "Escorts" && (
               <div className="mb-6 aspect-square overflow-hidden rounded-sm bg-muted">
@@ -328,12 +361,13 @@ export function ScrollStory({
               </div>
             )}
             {product.engineBrand === "Escorts" ? (
-              <ChapterInteractive chapterId={s.id} data={s as any} active={true} sectionId={sectionId} index={i} />
+              <ChapterInteractive chapterId={s.id} data={mobileData} active={true} sectionId={sectionId} index={i} />
             ) : (
               <SectionContent section={s} active index={i} sectionId={sectionId} />
             )}
           </article>
-        ))}
+            );
+          })}
       </div>
 
       {/* Vertical Dot Nav */}

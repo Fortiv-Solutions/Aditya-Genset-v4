@@ -82,6 +82,20 @@ export default function ProductDetail() {
 
           // Set as legacy-compatible ShowcaseProduct for ScrollStory
           setProduct(v2Data as any);
+          // Fix stale kVA in chapterDataMap.overview.highlights (DB may have wrong value from template)
+          if (v2Data.chapterDataMap?.overview) {
+            const ov = v2Data.chapterDataMap.overview;
+            // Always set kva to the actual product value
+            ov.kva = String(v2Data.kva ?? "");
+            // Correct the first highlight entry if it's a kVA stat
+            if (Array.isArray(ov.highlights) && ov.highlights.length > 0) {
+              const first = ov.highlights[0];
+              if (first.suffix === "kVA" || first.label?.toLowerCase().includes("kva")) {
+                ov.highlights[0] = { ...first, value: String(v2Data.kva ?? first.value) };
+              }
+            }
+          }
+
           setV2Product(v2Data);
           await loadProductCMS(v2Data.id);
           setLoading(false);
