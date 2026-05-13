@@ -45,16 +45,18 @@ export default function ProductDetail() {
         if (v2Data && v2Data.sections.length > 0) {
           console.log("✅ Using v2 product data for:", slug);
           
-          // Ensure video slide exists
-          const hasVideo = v2Data.sections.some(s => s.id === "video" || !!s.videoUrl);
-          if (!hasVideo) {
+          // Always ensure video section exists with correct Supabase URL
+          const SHOWCASE_VIDEO = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
+          const VIDEO_THUMB = "/assets/products/showcase/main-view-optimized.jpg";
+          const existingVideoSec = v2Data.sections.find(s => s.id === "video");
+          if (!existingVideoSec) {
             v2Data.sections.push({
               id: "video",
               number: String(v2Data.sections.length + 1).padStart(2, "0"),
               title: "Product Video",
               tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
-              image: "/assets/products/showcase/main-view-optimized.jpg",
-              videoUrl: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4",
+              image: VIDEO_THUMB,
+              videoUrl: SHOWCASE_VIDEO,
               alt: `${v2Data.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -63,9 +65,10 @@ export default function ProductDetail() {
               ],
             });
           } else {
-            const videoSec = v2Data.sections.find(s => s.id === "video" || !!s.videoUrl);
-            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
-            if (videoSec && !videoSec.image) videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
+            // Always force the Supabase URL — override whatever DB returned
+            existingVideoSec.videoUrl = SHOWCASE_VIDEO;
+            if (!existingVideoSec.image) existingVideoSec.image = VIDEO_THUMB;
+            existingVideoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
           }
           if (!v2Data.hotspots.find(h => h.id === "video")) {
             v2Data.hotspots.push({
@@ -165,9 +168,11 @@ export default function ProductDetail() {
             });
           }
 
-          // Ensure video slide exists
-          const videoSec = finalProduct.sections.find(s => s.id === "video" || !!s.videoUrl);
-          if (!videoSec) {
+          // Always ensure video section exists with correct Supabase URL
+          const SHOWCASE_VIDEO_URL = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
+          const VIDEO_THUMB_URL = "/assets/products/showcase/main-view-optimized.jpg";
+          const legacyVideoSec = finalProduct.sections.find(s => s.id === "video");
+          if (!legacyVideoSec) {
             const lastNum = finalProduct.sections.length > 0 
               ? parseInt(finalProduct.sections[finalProduct.sections.length - 1].number) 
               : 0;
@@ -176,8 +181,8 @@ export default function ProductDetail() {
               number: String(lastNum + 1).padStart(2, '0'),
               title: "Product Video",
               tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
-              image: "/assets/products/showcase/main-view-optimized.jpg",
-              videoUrl: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4",
+              image: VIDEO_THUMB_URL,
+              videoUrl: SHOWCASE_VIDEO_URL,
               alt: `${finalProduct.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -186,9 +191,10 @@ export default function ProductDetail() {
               ],
             });
           } else {
-            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
-            if (videoSec && !videoSec.image) videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
-            videoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
+            // Always force the Supabase URL — override whatever static data has
+            legacyVideoSec.videoUrl = SHOWCASE_VIDEO_URL;
+            if (!legacyVideoSec.image) legacyVideoSec.image = VIDEO_THUMB_URL;
+            legacyVideoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
           }
           if (!finalProduct.hotspots.find(h => h.id === "video")) {
             finalProduct.hotspots.push({
@@ -237,14 +243,17 @@ export default function ProductDetail() {
             finalProduct.sections.forEach((s, idx) => s.number = String(idx + 1).padStart(2, '0'));
           }
 
-          if (!finalProduct.sections.find(s => s.id === "video" || !!s.videoUrl)) {
+          // Always ensure video section exists with correct Supabase URL
+          const STATIC_VIDEO_URL = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
+          const staticVideoSec = finalProduct.sections.find(s => s.id === "video");
+          if (!staticVideoSec) {
             finalProduct.sections = [...finalProduct.sections, {
               id: "video",
               number: String(finalProduct.sections.length + 1).padStart(2, '0'),
               title: "Product Video",
               tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
               image: "/assets/products/showcase/main-view-optimized.jpg",
-              videoUrl: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4",
+              videoUrl: STATIC_VIDEO_URL,
               alt: `${finalProduct.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -253,17 +262,10 @@ export default function ProductDetail() {
               ],
             }];
           } else {
-            // Force videoUrl for the existing video section if missing or incorrect
-            const videoSec = finalProduct.sections.find(s => s.id === "video" || !!s.videoUrl);
-            if (videoSec && !videoSec.videoUrl) {
-              videoSec.videoUrl = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
-            }
-            if (videoSec && !videoSec.image) {
-              videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
-            }
-            if (videoSec) {
-              videoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
-            }
+            // Always force the Supabase URL — override whatever static data has
+            staticVideoSec.videoUrl = STATIC_VIDEO_URL;
+            if (!staticVideoSec.image) staticVideoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
+            staticVideoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
           }
           if (!finalProduct.hotspots.find(h => h.id === "video")) {
             finalProduct.hotspots = [...finalProduct.hotspots, {
