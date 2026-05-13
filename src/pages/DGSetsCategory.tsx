@@ -4,6 +4,7 @@ import { SEO } from "@/components/site/SEO";
 import { fetchPublishedProducts } from "@/lib/api/products";
 import { SectionReveal } from "@/components/site/SectionReveal";
 import { ArrowLeft, ArrowRight, Zap, Search, Loader2 } from "lucide-react";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 import { EditableText } from "@/components/cms/EditableText";
 import { useCMSState } from "@/components/cms/CMSEditorProvider";
@@ -73,12 +74,13 @@ export default function DGSetsCategory() {
               if (!isPlaceholder) return url;
               
               if (engineBrand.includes("escort")) {
+                if (p.kva <= 7.5) return "/assets/products/escorts/escort_15kva.jpg";
                 if (p.kva <= 10) return "/assets/products/escorts/escort_15kva.jpg";
                 if (p.kva <= 15) return "/assets/products/escorts/escort_15kva_2.jpg";
-                if (p.kva <= 20) return "/assets/products/escorts/escort_20kva_2.jpg";
-                if (p.kva <= 30) return "/assets/products/escorts/escort_30kva.jpg";
-                if (p.kva <= 35) return "/assets/products/escorts/escort_40kva_main.jpg";
-                if (p.kva <= 45) return "/assets/products/escorts/escort_40kva.jpg";
+                if (p.kva <= 25) return "/assets/products/escorts/escort_20kva_2.jpg";
+                if (p.kva <= 35) return "/assets/products/escorts/escort_30kva.jpg";
+                if (p.kva <= 45) return "/assets/products/escorts/escort_40kva_main.jpg";
+                if (p.kva <= 55) return "/assets/products/escorts/escort_40kva.jpg";
                 return "/assets/products/escorts/escort_58_5kva_1.jpg";
               }
               return "/assets/products/showcase/main-view-optimized.jpg";
@@ -256,12 +258,12 @@ export default function DGSetsCategory() {
 
                     {/* Image */}
                     <div className="relative h-48 bg-transparent overflow-hidden">
-                      <img
+                      <SmoothImage
                         src={set.image}
                         alt={set.model}
                         loading="eager"
-                        decoding="async"
-                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
+                        wrapperClassName="h-full w-full"
+                        imageClassName="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
                       />
                     </div>
 

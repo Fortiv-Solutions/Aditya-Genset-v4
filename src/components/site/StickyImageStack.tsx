@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import type { ShowcaseSection } from "@/data/products";
 import { Play, Volume2 } from "lucide-react";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 interface Props {
   sections: ShowcaseSection[];
@@ -96,12 +97,12 @@ export function StickyImageStack({ sections, active }: Props) {
             {s.videoUrl ? (
               <VideoSlide section={s} isActive={i === active} />
             ) : (
-              <img
+              <SmoothImage
                 src={s.image}
                 alt={s.alt}
                 loading="eager"
-                decoding="async"
-                className="h-full w-full object-contain"
+                wrapperClassName="h-full w-full"
+                imageClassName="h-full w-full object-contain"
               />
             )}
           </div>

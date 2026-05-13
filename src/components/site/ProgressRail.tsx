@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 interface Props {
   count: number;
@@ -32,13 +33,13 @@ export function ProgressRail({ count, active, labels, images, videoUrls, onJump 
                   isActive ? "border-accent scale-110 shadow-lg" : "border-foreground/20 group-hover:border-accent/60 group-hover:scale-105 opacity-60 group-hover:opacity-100",
                 )}
               >
-                <img
+                <SmoothImage
                   src={images[i]}
                   alt={labels?.[i] ?? `Section ${i + 1}`}
                   loading="eager"
-                  decoding="async"
-                  className={cn(
-                    "h-full w-full object-top transition-all duration-500",
+                  wrapperClassName="h-full w-full"
+                  imageClassName={cn(
+                    "h-full w-full object-cover transition-all duration-500",
                     isActive ? "grayscale-0" : "grayscale group-hover:grayscale-0"
                   )}
                 />
