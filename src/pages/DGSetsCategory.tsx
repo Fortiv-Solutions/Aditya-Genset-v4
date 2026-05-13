@@ -73,7 +73,12 @@ export default function DGSetsCategory() {
             application: specs.find(s => s.label.toLowerCase().includes('application'))?.value || 'Prime',
             fuel: specs.find(s => s.label.toLowerCase().includes('fuel consumption'))?.value || 'Variable',
             noise: specs.find(s => s.label.toLowerCase().includes('noise'))?.value || '70 dB(A)',
-            image: primaryMedia?.public_url || (() => {
+            image: (() => {
+              const url = primaryMedia?.public_url;
+              const isPlaceholder = !url || url.includes("placeholder") || url.includes("enclosure.jpg") || url.includes("engine-real.jpg");
+              
+              if (!isPlaceholder) return url;
+              
               if (engineBrand.includes("escort")) {
                 if (p.kva <= 10) return escort10;
                 if (p.kva <= 15) return escort15;

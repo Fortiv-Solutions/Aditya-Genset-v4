@@ -827,7 +827,7 @@ export const EKL20_SHOWCASE: ShowcaseProduct = {
       x: 50, y: 78,
       title: "Dimensions & Weight",
       description: "Compact design: 1950 × 1050 × 1555 mm.",
-      subImage: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/escort_20kva_2.jpg",
+      subImage: escort20KVA2,
       zoom: 1.2, offsetX: 0, offsetY: -10,
       specs: [
         { label: "Length", value: "1950 mm" },
@@ -866,7 +866,7 @@ export const EKL20_SHOWCASE: ShowcaseProduct = {
       number: "01",
       title: "EKL 20 kVA Silent DG Set",
       tagline: "Escorts G20-IV powered 3-cylinder engine.",
-      image: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/escort_20kva_2.jpg",
+      image: escort20KVA2,
       alt: "ATM EKL 20 kVA 3-cylinder silent diesel generator",
       specs: [
         { label: "Model", value: "EKL20(3cyl)-IV" },
@@ -884,7 +884,7 @@ export const EKL20_SHOWCASE: ShowcaseProduct = {
       number: "02",
       title: "Engine",
       tagline: "Escorts G20-IV — 3-cylinder performance.",
-      image: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/escort_20kva.jpg",
+      image: escort20KVA,
       alt: "Escorts 3-cylinder engine",
       specs: [
         { label: "Make", value: "Escorts" },

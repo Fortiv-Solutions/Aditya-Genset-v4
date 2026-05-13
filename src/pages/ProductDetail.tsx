@@ -20,6 +20,14 @@ import showcaseVideo from "@/assets/products/showcase/product-video.mp4";
 import escortVideo from "@/assets/products/showcase/product-video.mp4";
 import escortVideoThumb from "@/assets/products/showcase/main-view-optimized.jpg";
 import escortElectrical from "@/assets/products/escorts/escort_40kva_4.jpg";
+import escortEngine from "@/assets/products/escorts/escort_40kva_2.jpg";
+import escortAlternator from "@/assets/products/escorts/escort_40kva_3.jpg";
+import escortControl from "@/assets/products/escorts/escort_30kva_1.jpg";
+import escortEnclosure from "@/assets/products/escorts/escort_58_5kva_5.jpg";
+import escortSupply from "@/assets/products/escorts/escort_20kva_1.jpg";
+import escortProtection from "@/assets/products/escorts/escort_58_5kva_6.jpg";
+import escortDimensions from "@/assets/products/escorts/escort_20kva.jpg";
+import escort15 from "@/assets/products/escorts/escort_15kva_2.jpg";
 
 // Height of the absolute header overlay in px — used to offset first chapter
 export const SHOWCASE_HEADER_H = 230;
@@ -99,6 +107,26 @@ export default function ProductDetail() {
             staticData?.thumbnail ||
             "";
 
+          const isEscort = ((data.product as any).engine_brand || staticData?.engineBrand || "").toLowerCase().includes("escort");
+          
+          const getEscortFallback = (key: string, current: string) => {
+            if (!isEscort) return current;
+            const isPlaceholder = !current || current.includes("placeholder") || current.includes("enclosure.jpg") || current.includes("engine-real.jpg");
+            if (!isPlaceholder) return current;
+
+            const k = key.toLowerCase();
+            if (k.includes("engine")) return escortEngine;
+            if (k.includes("alternator")) return escortAlternator;
+            if (k.includes("control")) return escortControl;
+            if (k.includes("enclosure") || k.includes("canopy")) return escortEnclosure;
+            if (k.includes("protection")) return escortProtection;
+            if (k.includes("electrical")) return escortElectrical;
+            if (k.includes("supply")) return escortSupply;
+            if (k.includes("dimension")) return escortDimensions;
+            if (k.includes("fuel")) return escortSupply;
+            return escort15;
+          };
+
           let finalProduct: ShowcaseProduct = {
             id: data.product.id,
             slug: data.product.slug,
@@ -109,10 +137,14 @@ export default function ProductDetail() {
             status: "active",
             thumbnail: primaryImage, 
             hero: primaryImage, 
-            sections: data.showcase?.sections || staticData?.sections || [],
-            hotspots: (data.showcase?.hotspots?.length >= 8) 
-              ? data.showcase.hotspots 
-              : (staticData?.hotspots || []),
+            sections: (data.showcase?.sections || staticData?.sections || []).map((s: any) => ({
+              ...s,
+              image: getEscortFallback(s.id, s.image)
+            })),
+            hotspots: (data.showcase?.hotspots?.length >= 8 ? data.showcase.hotspots : (staticData?.hotspots || [])).map((h: any) => ({
+              ...h,
+              subImage: getEscortFallback(h.id, h.subImage)
+            })),
           };
 
           // Ensure Electrical section exists for consistency

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/site/SEO";
 import { SectionReveal } from "@/components/site/SectionReveal";
 import { ArrowRight, Zap, Package } from "lucide-react";
-import dgProduct from "@/assets/products/parts/enclosure.jpg";
+import dgProduct from "@/assets/products/escorts/escort_40kva_main.jpg";
 import containerImg from "@/assets/products/showcase/container-optimized.jpg";
 import { EditableText } from "@/components/cms/EditableText";
 import { useCMSState } from "@/components/cms/CMSEditorProvider";
