@@ -6,7 +6,7 @@ const dgDimensions = "/assets/products/escorts/escort_20kva.jpg";
 const dgThumb = "/assets/products/escorts/escort_40kva_main.jpg";
 const dgControl = "/assets/products/escorts/escort_30kva_1.jpg"; 
 const dgFuel = "/assets/products/escorts/escort_25kva.jpg";
-const escortVideo = "/assets/products/showcase/product-video.mp4";
+const escortVideo = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
 
 // ── Shared Assets for Escort Products ──────────────────────────────────────────
 const ekl15Engine = "/assets/products/escorts/escort_40kva_2.jpg";

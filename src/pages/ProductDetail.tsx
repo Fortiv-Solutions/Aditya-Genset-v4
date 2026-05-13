@@ -14,7 +14,7 @@ import { BarChart2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 const videoThumb = "/assets/products/showcase/main-view-optimized.jpg";
 
-import showcaseVideo from "@/assets/products/showcase/product-video.mp4";
+
 
 // Import core showcase assets to ensure they are bundled correctly
 
@@ -54,7 +54,7 @@ export default function ProductDetail() {
               title: "Product Video",
               tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
               image: "/assets/products/showcase/main-view-optimized.jpg",
-              videoUrl: "/assets/products/showcase/product-video.mp4",
+              videoUrl: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4",
               alt: `${v2Data.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -64,7 +64,7 @@ export default function ProductDetail() {
             });
           } else {
             const videoSec = v2Data.sections.find(s => s.id === "video" || !!s.videoUrl);
-            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
+            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
             if (videoSec && !videoSec.image) videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
           }
           if (!v2Data.hotspots.find(h => h.id === "video")) {
@@ -177,7 +177,7 @@ export default function ProductDetail() {
               title: "Product Video",
               tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
               image: "/assets/products/showcase/main-view-optimized.jpg",
-              videoUrl: "/assets/products/showcase/product-video.mp4",
+              videoUrl: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4",
               alt: `${finalProduct.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -186,7 +186,7 @@ export default function ProductDetail() {
               ],
             });
           } else {
-            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
+            if (videoSec && !videoSec.videoUrl) videoSec.videoUrl = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
             if (videoSec && !videoSec.image) videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
             videoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
           }
@@ -237,14 +237,14 @@ export default function ProductDetail() {
             finalProduct.sections.forEach((s, idx) => s.number = String(idx + 1).padStart(2, '0'));
           }
 
-          if (!finalProduct.sections.find(s => s.id === "video")) {
+          if (!finalProduct.sections.find(s => s.id === "video" || !!s.videoUrl)) {
             finalProduct.sections = [...finalProduct.sections, {
               id: "video",
               number: String(finalProduct.sections.length + 1).padStart(2, '0'),
               title: "Product Video",
-              tagline: "Escort DG Set — Multiple views and 360° product showcase.",
-              image: videoThumb,
-              videoUrl: showcaseVideo,
+              tagline: "360° Product Showcase — Experience the engineering and build quality in detail.",
+              image: "/assets/products/showcase/main-view-optimized.jpg",
+              videoUrl: "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4",
               alt: `${finalProduct.name} 360 degree showcase`,
               specs: [
                 { label: "Duration", value: "8 sec" },
@@ -254,12 +254,15 @@ export default function ProductDetail() {
             }];
           } else {
             // Force videoUrl for the existing video section if missing or incorrect
-            const videoSec = finalProduct.sections.find(s => s.id === "video");
+            const videoSec = finalProduct.sections.find(s => s.id === "video" || !!s.videoUrl);
             if (videoSec && !videoSec.videoUrl) {
-              videoSec.videoUrl = "/assets/products/showcase/product-video.mp4";
+              videoSec.videoUrl = "https://vbbeibweeavuksmvkbnb.supabase.co/storage/v1/object/public/product-assets/product-video.mp4";
             }
             if (videoSec && !videoSec.image) {
               videoSec.image = "/assets/products/showcase/main-view-optimized.jpg";
+            }
+            if (videoSec) {
+              videoSec.tagline = "360° Product Showcase — Experience the engineering and build quality in detail.";
             }
           }
           if (!finalProduct.hotspots.find(h => h.id === "video")) {
